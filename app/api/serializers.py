@@ -9,7 +9,7 @@ from .models import *
 class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaExercise
-        fields = ('name', 'details', 'duration','image','numberOfExercises')
+        fields = ('name', 'details', 'duration','image')
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
@@ -41,7 +41,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class YogaPlanSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaPlan
-        fields = ('name','description','numberOfExercises', 'createdAt', 'image','exercises','totalDuration')
+        fields = ('id','name','description','numberOfExercises', 'createdAt', 'image','exercises','totalDuration')
 
 
 # comment serializer
@@ -65,15 +65,6 @@ class TraineeSerializer(serializers.HyperlinkedModelSerializer):
         fields =  ['id','birthdate','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
         
         
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Category
-        fields =  ['id','name']
-
-class SubCatSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = subCategories
-        fields = ['id','level']
 
 class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

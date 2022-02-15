@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
 def upload_to(instance, filename):
     return 'yogaexercises/{filename}'.format(filename=filename)
 
@@ -27,6 +26,7 @@ class Trainer(models.Model):
         ('F', 'Female'),
     )
     fullname = models.CharField(max_length=30)
+    password = models.CharField(max_length=20, default='pass')
     Email = models.EmailField(max_length=30, unique=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phoneNumber = models.CharField(max_length=11)
@@ -55,8 +55,6 @@ class YogaPlan(models.Model):
     name = models.CharField(max_length=50)
     description= models.CharField(max_length=70 , null=True)
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE,default=1)
-    totalDuration = models.IntegerField(null=True)
-    numberOfExercises = models.IntegerField(null=True)
     exercises = models.ManyToManyField(YogaExercise, blank=True)
     image = models.ImageField(upload_to='media/')
     status = models.BooleanField(default=False)
@@ -87,25 +85,10 @@ class WorkoutExcercise(models.Model):
         return self.name
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-
-class subCategories(models.Model):
-    level = models.CharField(max_length=30)
-
 
 class WorkoutPlan(models.Model):
     name = models.CharField(max_length=30)
-    numberOfEexercises = models.IntegerField(null=True)
-    totalTimeOfExercises = models.FloatField(null=True)
     exercise = models.ManyToManyField(WorkoutExcercise, null=True,  blank=True)
-    # catogery = models.ForeignKey(Category, on_delete=models.CASCADE)
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE ,default=1)
     image = models.ImageField(upload_to='images/', default='None/no-img.jpg')
     status = models.BooleanField(default=True)

@@ -51,9 +51,7 @@ class ReportCommentViewSet(viewsets.ModelViewSet):
     queryset = ReportComment.objects.all()
     serializer_class = ReportCommentSerializer
        
-class SubCatViewSet(viewsets.ModelViewSet):
-    queryset = subCategories.objects.all()
-    serializer_class = SubCatSerializer
+
 
 class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all()
@@ -62,7 +60,3 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
 class TraineeViewSet(viewsets.ModelViewSet):
     queryset = Trainee.objects.all()
     serializer_class = TraineeSerializer
-    
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
