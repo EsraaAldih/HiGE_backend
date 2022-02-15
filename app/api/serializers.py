@@ -9,7 +9,7 @@ from .models import *
 class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaExercise
-        fields = ('name', 'details', 'duration','image')
+        fields = ('id', 'name', 'details', 'duration','image')
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
