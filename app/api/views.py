@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
 # django User
-from .serializers import UserSerializer
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
@@ -60,3 +59,8 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
 class TraineeViewSet(viewsets.ModelViewSet):
     queryset = Trainee.objects.all()
     serializer_class = TraineeSerializer
+    
+    
+class UsersViewSet(viewsets.ModelViewSet):
+    queryset = Trainee.objects.all()
+    serializer_class = UsersSerializer

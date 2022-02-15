@@ -31,10 +31,10 @@ class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
                   'totalTimeOfExercises','exercise', 'status', 'image']
 
 # yoga plan serializer
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UsersSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'is_staff']
+        model = Users
+        fields = ['email','password', 'is_staff']
 
 
 # yoga plan serializer

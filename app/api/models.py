@@ -6,7 +6,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 def upload_to(instance, filename):
     return 'yogaexercises/{filename}'.format(filename=filename)
-
+class Users(models.Model):
+    email = models.EmailField(max_length=30, unique=True)
+    password = models.CharField(max_length=20, default='pass')
+    is_staff = models.BooleanField(default=False)
+    def __str__(self):
+        return self.email
 
 class YogaExercise(models.Model):
     name = models.CharField(max_length=100, null=False,
