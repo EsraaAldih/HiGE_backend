@@ -41,7 +41,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class YogaPlanSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaPlan
-        fields = ('name','numberOfExercises', 'createdAt', 'image','exercises','totalDuration')
+        fields = ('name','description','numberOfExercises', 'createdAt', 'image','exercises','totalDuration')
 
 
 # comment serializer

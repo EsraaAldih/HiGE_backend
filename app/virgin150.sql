@@ -476,7 +476,8 @@ CREATE TABLE public.api_yogaplan (
     image character varying(100) NOT NULL,
     status boolean NOT NULL,
     "createdAt" timestamp with time zone NOT NULL,
-    owner_id bigint NOT NULL
+    owner_id bigint NOT NULL,
+    description character varying(70)
 );
 
 
@@ -1310,7 +1311,22 @@ COPY public.api_yogaexercise (id, name, details, duration, image, "createdAt", "
 -- Data for Name: api_yogaplan; Type: TABLE DATA; Schema: public; Owner: djangos
 --
 
-COPY public.api_yogaplan (id, name, image, status, "createdAt", owner_id) FROM stdin;
+COPY public.api_yogaplan (id, name, image, status, "createdAt", owner_id, description) FROM stdin;
+1	Beginner Yoga	media/yogabeginner_87mB1Fj.jpeg	t	2022-02-15 13:26:17.622635+02	1	Yoga For Beginners with easy follow poses
+2	Core Yoga	media/coreyoga_hKPTLOL.jpeg	t	2022-02-15 13:30:11.984686+02	1	Focuses on different Twist moves to release stress
+3	Dynamic Yoga	media/dynamicyoga_Oh7CNWB.jpeg	t	2022-02-15 13:33:56.764685+02	1	Gives you inner energy
+4	Twist Stretch Yoga	media/twiststretch_NL1gcor.jpeg	t	2022-02-15 13:52:43.157175+02	1	Helps you to extend all body parts
+5	White Heat Yoga	media/whiteheat_0ddwutY.jpeg	t	2022-02-15 13:56:39.726471+02	1	Focuses on Flexibility and Strength of muscles
+6	Heartbeat Yoga	media/heartbeat_axSzzlk.jpeg	t	2022-02-15 13:59:31.532806+02	1	Focuses on yoga postures
+7	Be Continued Yoga	media/becontinued_dw1Elx1.jpeg	t	2022-02-15 14:02:32.842712+02	1	Maintain poses for an extended amount of time and improve your balance
+8	Back Care Yoga	media/backyoga_k30Zw0l.jpeg	t	2022-02-15 14:09:30.664158+02	1	A routine to help relieve your back tightness
+9	Yoga Balance	media/yogabalance_MAA14MX.jpeg	t	2022-02-15 14:12:40.288486+02	1	Calms your mind and makes you feel the peace
+10	Yummy Yoga	media/yummyyoga.jpeg	t	2022-02-15 14:15:09.207329+02	1	Stretch your entire body with different angles and poses
+11	Yogi Angel Yoga	media/yogiangel.jpeg	t	2022-02-15 14:49:53.875608+02	1	Light exercises to recharge your energy and spirit for new day
+12	Power Yoga	media/poweryoga.jpeg	t	2022-02-15 14:54:50.50512+02	1	Strengthen and relax your body
+13	Just Be Yoga	media/justbeyoga.jpeg	t	2022-02-15 14:58:16.214262+02	1	Light exercises to active your body and decrease fatigue
+14	Laughing Frog Yoga	media/Laughingfrogyoga.jpeg	t	2022-02-15 15:02:12.783121+02	1	Relaxing your body , make it breath
+15	Go To Flow Yoga	media/gotoflowyoga.jpeg	t	2022-02-15 15:09:50.922754+02	1	Breath And Relax
 \.
 
 
@@ -1506,6 +1522,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 21	api	0003_remove_workoutplan_totaltimeofexercises_and_more	2022-02-15 01:42:49.399434+02
 22	api	0004_remove_workoutplan_numberofeexercises	2022-02-15 01:47:16.203061+02
 23	api	0005_remove_workoutplan_catogery	2022-02-15 02:23:05.54267+02
+24	api	0006_yogaplan_description	2022-02-15 16:55:04.669883+02
 \.
 
 
@@ -1613,7 +1630,7 @@ SELECT pg_catalog.setval('public.api_yogaplan_exercises_id_seq', 1, false);
 -- Name: api_yogaplan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: djangos
 --
 
-SELECT pg_catalog.setval('public.api_yogaplan_id_seq', 1, false);
+SELECT pg_catalog.setval('public.api_yogaplan_id_seq', 15, true);
 
 
 --
@@ -1676,7 +1693,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 18, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: djangos
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 23, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 24, true);
 
 
 --

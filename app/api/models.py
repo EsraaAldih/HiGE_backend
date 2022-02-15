@@ -53,6 +53,7 @@ class Post(models.Model):
 # yoga plan model
 class YogaPlan(models.Model):
     name = models.CharField(max_length=50)
+    description= models.CharField(max_length=70 , null=True)
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE,default=1)
     totalDuration = models.IntegerField(null=True)
     numberOfExercises = models.IntegerField(null=True)
