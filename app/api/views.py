@@ -14,50 +14,50 @@ from .serializers import *
 
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
-    queryset = YogaExercise.objects.all()
+    queryset = YogaExercise.objects.all().order_by('id')
     serializer_class = YogaExerciseSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('id')
     serializer_class = PostSerializer
 
 
 class ReportPostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('id')
     serializer_class = ReportPostSerializer
 
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
-    queryset = WorkoutPlan.objects.all()
+    queryset = WorkoutPlan.objects.all().order_by('id')
     serializer_class = WorkoutPlanSerializer
 
 
 # yoga plans view
 class YogaPlanViewSet(viewsets.ModelViewSet):
-    queryset = YogaPlan.objects.all()
+    queryset = YogaPlan.objects.all().order_by('id')
     serializer_class = YogaPlanSerializer
 
 
 # comments view
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().order_by('id')
     serializer_class = CommentSerializer
 
 
 # report comments view
 class ReportCommentViewSet(viewsets.ModelViewSet):
-    queryset = ReportComment.objects.all()
+    queryset = ReportComment.objects.all().order_by('id')
     serializer_class = ReportCommentSerializer
        
 
 
 class WorkoutExViewSet(viewsets.ModelViewSet):
-    queryset = WorkoutExcercise.objects.all()
+    queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
 class TraineeViewSet(viewsets.ModelViewSet):
-    queryset = Trainee.objects.all()
+    queryset = Trainee.objects.all().order_by('id')
     serializer_class = TraineeSerializer
     
     
