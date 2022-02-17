@@ -25,10 +25,16 @@ class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
+    exercise = serializers.SlugRelatedField(
+        many=True,
+        slug_field='name',
+        queryset=WorkoutExcercise.objects.all()
+     )
     class Meta:
         model = WorkoutPlan
         fields = ['id', 'name', 'numberOfEexercises',
                   'totalTimeOfExercises','exercise', 'status', 'image']
+
 
 # yoga plan serializer
 class UsersSerializer(serializers.HyperlinkedModelSerializer):
@@ -39,6 +45,11 @@ class UsersSerializer(serializers.HyperlinkedModelSerializer):
 
 # yoga plan serializer
 class YogaPlanSerializer(serializers.HyperlinkedModelSerializer):
+    exercises = serializers.SlugRelatedField(
+        many=True,
+        slug_field= 'name',
+        queryset=YogaExercise.objects.all()
+     )
     class Meta:
         model = YogaPlan
         fields = ('id','name','description','numberOfExercises', 'createdAt', 'image','exercises','totalDuration')
@@ -62,7 +73,7 @@ class ReportCommentSerializer(serializers.HyperlinkedModelSerializer):
 class TraineeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Trainee
-        fields =  ['id','birthdate','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
+        fields =  ['id','age','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
         
         
 

@@ -24,6 +24,9 @@ class YogaExercise(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Trainer(models.Model):
     GENDER_CHOICES = (
@@ -113,6 +116,7 @@ class WorkoutPlan(models.Model):
         for i in self.exercise.values():
             sum+=1
         return sum
+
 
 
 class Trainee(models.Model):
