@@ -73,7 +73,7 @@ class ReportCommentSerializer(serializers.HyperlinkedModelSerializer):
 class TraineeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Trainee
-        fields =  ['id','birthdate','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
+        fields =  ['id','age','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
         
         
 
