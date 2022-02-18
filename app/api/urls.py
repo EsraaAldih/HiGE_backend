@@ -12,11 +12,12 @@ router.register(r'yogaplans', YogaPlanViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'commentreports', ReportCommentViewSet)
 router.register(r'workoutexersices', WorkoutExViewSet)
-router.register(r'trainees', TraineeViewSet)
-router.register(r'users', UsersViewSet)
+
+
 
 urlpatterns = [
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
+    
 ]

@@ -10,6 +10,8 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
+from rest_auth.views import LoginView ,APIView
+from rest_framework.permissions import *
 # Create your views here.
 
 
@@ -30,7 +32,7 @@ class ReportPostViewSet(viewsets.ModelViewSet):
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
     queryset = WorkoutPlan.objects.all()
-    serializer_class = WorkoutPlanSerializer
+    serializer_class = WorkoutPlansSerializer
 
 
 # yoga plans view
@@ -56,11 +58,5 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all()
     serializer_class = WorkoutExSerializer
     
-class TraineeViewSet(viewsets.ModelViewSet):
-    queryset = Trainee.objects.all()
-    serializer_class = TraineeSerializer
     
-    
-class UsersViewSet(viewsets.ModelViewSet):
-    queryset = Trainee.objects.all()
-    serializer_class = UsersSerializer
+  
