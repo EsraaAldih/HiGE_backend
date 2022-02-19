@@ -59,4 +59,3 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
     serializer_class = WorkoutExSerializer
     
     
-  
