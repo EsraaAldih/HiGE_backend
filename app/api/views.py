@@ -88,7 +88,6 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
-<<<<<<< HEAD
 
 class weightViewSet(viewsets.ModelViewSet):
     queryset = weightTracker.objects.all().order_by('id')
@@ -96,7 +95,6 @@ class weightViewSet(viewsets.ModelViewSet):
 
 
 
-=======
     
   
 @api_view()
@@ -119,4 +117,3 @@ class UserDetail(APIView):
         # except:
         #     print("not a trainee")
         return Response ({"email":request.user.email})
->>>>>>> 62b838b563ad295a982b491650c90bbf197b7cf9
