@@ -73,7 +73,7 @@ class ReportCommentSerializer(serializers.HyperlinkedModelSerializer):
 class TraineeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Trainee
-        fields =  ['id','birthdate','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
+        fields = ['id','age','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
         
         
 
@@ -81,3 +81,8 @@ class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = WorkoutExcercise
         fields = ['id','name','duration','description','gif']
+
+class weightSerialzer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = weightTracker
+        fields = ['id','traineeID','currentWeight','weightStatus']

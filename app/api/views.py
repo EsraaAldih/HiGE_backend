@@ -29,13 +29,12 @@ class ReportPostViewSet(viewsets.ModelViewSet):
 
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
-    queryset = WorkoutPlan.objects.all()
+    queryset = WorkoutPlan.objects.all().order_by('id')
     serializer_class = WorkoutPlanSerializer
-
 
 # yoga plans view
 class YogaPlanViewSet(viewsets.ModelViewSet):
-    queryset = YogaPlan.objects.all()
+    queryset = YogaPlan.objects.all().order_by('id')
     serializer_class = YogaPlanSerializer
 
 
@@ -64,3 +63,7 @@ class TraineeViewSet(viewsets.ModelViewSet):
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = Trainee.objects.all()
     serializer_class = UsersSerializer
+
+class weightViewSet(viewsets.ModelViewSet):
+    queryset = weightTracker.objects.all().order_by('id')
+    serializer_class = weightSerialzer

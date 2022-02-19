@@ -179,4 +179,15 @@ class ReportComment(models.Model):
     content = models.TextField()
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
-    
+
+class weightTracker(models.Model):
+    currentWeight = models.CharField(max_length=5, null=True)
+    #status = models.BooleanField(default=False)
+    traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True)
+
+    @property
+    def weightStatus(self):
+        for i in self.traineeID.values():
+            if i.get('initialWeight') > self.currentWeight:
+                status = True
+        return status
