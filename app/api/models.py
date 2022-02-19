@@ -18,19 +18,15 @@ class Trainer(models.Model):
         ('Female', 'Female'),
     )
     trainer = models.OneToOneField(
-      settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     age = models.IntegerField(default=0)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES,default='Female')
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Female')
     phoneNumber = models.CharField(max_length=11)
     address = models.TextField()
     image = models.ImageField(upload_to='profile/', default='None/no-img.jpg')
-    
-    
 
     def __str__(self):
         return self.trainer.username
-
-
 
 
 class YogaExercise(models.Model):
@@ -48,9 +44,6 @@ class YogaExercise(models.Model):
         return self.name
 
 
-
-
-
 class Post(models.Model):
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE)
     text = models.TextField()
@@ -58,32 +51,33 @@ class Post(models.Model):
     updatedAt = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.createdAt } - {self.owner}"
+        return f"{self.createdAt} - {self.owner}"
 
 
 # yoga plan model
 class YogaPlan(models.Model):
     name = models.CharField(max_length=50)
-    description= models.CharField(max_length=70 , null=True)
-    owner = models.ForeignKey(Trainer, on_delete=models.CASCADE,default=1)
+    description = models.CharField(max_length=70, null=True)
+    owner = models.ForeignKey(Trainer, on_delete=models.CASCADE, default=1)
     exercises = models.ManyToManyField(YogaExercise, blank=True)
     image = models.ImageField(upload_to='media/')
     status = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
 
     @property
-    def totalDuration (self):
-        sum=0
+    def totalDuration(self):
+        sum = 0
         for i in self.exercises.values():
-            sum+=i.get('duration')
+            sum += i.get('duration')
         return sum
 
     @property
-    def numberOfExercises (self):
-        sum=0
+    def numberOfExercises(self):
+        sum = 0
         for i in self.exercises.values():
-            sum+=1
+            sum += 1
         return sum
+
 
 class WorkoutExcercise(models.Model):
     name = models.CharField(max_length=30)
@@ -96,52 +90,50 @@ class WorkoutExcercise(models.Model):
         return self.name
 
 
-
 class WorkoutPlan(models.Model):
     name = models.CharField(max_length=30)
-    description= models.CharField(max_length=70 , null=True)
+    description = models.CharField(max_length=70, null=True)
     exercise = models.ManyToManyField(WorkoutExcercise, blank=True)
-    owner = models.ForeignKey(Trainer, on_delete=models.CASCADE ,default=1)
+    owner = models.ForeignKey(Trainer, on_delete=models.CASCADE, default=1)
     image = models.ImageField(upload_to='images/', default='None/no-img.jpg')
     status = models.BooleanField(default=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
     @property
-    def totalTimeOfExercises (self):
-        sum=0
+    def totalTimeOfExercises(self):
+        sum = 0
         for i in self.exercise.values():
-            sum+=i.get('duration')
+            sum += i.get('duration')
         return sum
 
     @property
-    def numberOfEexercises (self):
-        sum=0
+    def numberOfEexercises(self):
+        sum = 0
         for i in self.exercise.values():
-            sum+=1
+            sum += 1
         return sum
 
 
 class Trainee(models.Model):
     trainee = models.OneToOneField(
-      settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     age = models.IntegerField(default=0)
-   # initialWeight = models.CharField(max_length=5)
-    currentWeight = models.CharField(max_length=5, null=True)
+    currentWeight = models.CharField(max_length=5, null=True, blank=True)
     height = models.CharField(max_length=5)
     medicalHistory = models.BooleanField(default=False)
-    trainerID = models.ForeignKey(Trainer, on_delete=models.SET_NULL,null=True)
-    yogaPlan = models.ForeignKey(YogaPlan, on_delete=models.SET_NULL,null=True)
-    workoutPlan = models.ForeignKey(WorkoutPlan, on_delete=models.SET_NULL,null=True)
+    trainerID = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True)
+    yogaPlan = models.ForeignKey(YogaPlan, on_delete=models.SET_NULL, null=True)
+    workoutPlan = models.ForeignKey(WorkoutPlan, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, null=True)
-    @property
-    def  initialWeight (self):
-            return self.currentWeight
+
+   # def __str__(self):
+    #    return self.trainee.name
+
     def __str__(self):
-            return self.trainee.username
-       
-        
-    
+        return self.trainee.username
+
+
 class ReportPost(models.Model):
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -150,11 +142,10 @@ class ReportPost(models.Model):
     updatedAt = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.createdAt } - {self.owner}"
+        return f"{self.createdAt} - {self.owner}"
 
 
-
- # comment model
+# comment model
 
 
 class Comment(models.Model):
@@ -167,9 +158,17 @@ class Comment(models.Model):
 
 # report comment model
 class ReportComment(models.Model):
-    
     content = models.TextField()
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
 
-    
+
+class weightTracker(models.Model):
+    traineeID = models.OneToOneField(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
+    currentWeight = models.CharField(max_length=5, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.currentWeight is None:
+            self.currentWeight = self.traineeID.currentWeight
+        super(weightTracker, self).save(*args, **kwargs)
+

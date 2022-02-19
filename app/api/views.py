@@ -84,11 +84,17 @@ class ReportCommentViewSet(viewsets.ModelViewSet):
     serializer_class = ReportCommentSerializer
        
 
-
 class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
+
+class weightViewSet(viewsets.ModelViewSet):
+    queryset = weightTracker.objects.all().order_by('id')
+    serializer_class = weightSerialzer
+
+
+
     
   
 @api_view()
