@@ -1,17 +1,37 @@
 import datetime
+from email import utils
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
+from django.conf import settings
+
 
 def upload_to(instance, filename):
     return 'yogaexercises/{filename}'.format(filename=filename)
-class Users(models.Model):
-    email = models.EmailField(max_length=30, unique=True)
-    password = models.CharField(max_length=20, default='pass')
-    is_staff = models.BooleanField(default=False)
+
+
+class Trainer(models.Model):
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    )
+    trainer = models.OneToOneField(
+      settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    age = models.IntegerField(default=0)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES,default='Female')
+    phoneNumber = models.CharField(max_length=11)
+    address = models.TextField()
+    image = models.ImageField(upload_to='profile/', default='None/no-img.jpg')
+    
+    
+
     def __str__(self):
-        return self.email
+        return self.trainer.username
+
+
+
 
 class YogaExercise(models.Model):
     name = models.CharField(max_length=100, null=False,
@@ -28,24 +48,7 @@ class YogaExercise(models.Model):
         return self.name
 
 
-class Trainer(models.Model):
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-    )
-    fullname = models.CharField(max_length=30)
-    password = models.CharField(max_length=20, default='pass')
-    Email = models.EmailField(max_length=30, unique=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    phoneNumber = models.CharField(max_length=11)
-    birthdate = models.DateField(null=True)
-    addres = models.TextField()
-    image = models.ImageField(upload_to='profile/', default='None/no-img.jpg')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.fullname
 
 
 class Post(models.Model):
@@ -96,12 +99,13 @@ class WorkoutExcercise(models.Model):
 
 class WorkoutPlan(models.Model):
     name = models.CharField(max_length=30)
-    exercise = models.ManyToManyField(WorkoutExcercise, null=True,  blank=True)
+    description= models.CharField(max_length=70 , null=True)
+    exercise = models.ManyToManyField(WorkoutExcercise, blank=True)
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE ,default=1)
     image = models.ImageField(upload_to='images/', default='None/no-img.jpg')
     status = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
 
     @property
     def totalTimeOfExercises (self):
@@ -120,36 +124,24 @@ class WorkoutPlan(models.Model):
 
 
 class Trainee(models.Model):
-    fullName = models.CharField(max_length=30)
-    age = models.IntegerField()
-    initialWeight = models.CharField(max_length=5)
+    trainee = models.OneToOneField(
+      settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    age = models.IntegerField(default=0)
+   # initialWeight = models.CharField(max_length=5)
     currentWeight = models.CharField(max_length=5, null=True)
-    email = models.EmailField(max_length=30)
-    password = models.CharField(max_length=20)
-    confirmPassword = models.CharField(max_length=20)
     height = models.CharField(max_length=5)
     medicalHistory = models.BooleanField(default=False)
-    trainerID = models.ForeignKey(Trainer, on_delete=models.CASCADE)
-    yogaPlan = models.ForeignKey(YogaPlan, on_delete=models.CASCADE)
-    workoutPlan = models.ForeignKey(WorkoutPlan, on_delete=models.CASCADE)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
+    trainerID = models.ForeignKey(Trainer, on_delete=models.SET_NULL,null=True)
+    yogaPlan = models.ForeignKey(YogaPlan, on_delete=models.SET_NULL,null=True)
+    workoutPlan = models.ForeignKey(WorkoutPlan, on_delete=models.SET_NULL,null=True)
     status = models.CharField(max_length=20, null=True)
-
-    def getDate(self):
-        time = datetime.now()
-        if self.createdAt.day == time.day:
-            return str(time.hour - self.createdAt.hour) + " hours ago"
-        if self.createdAt.month == time.month:
-            return str(time.day - self.createdAt.day) + " days ago"
-        else:
-            if self.createdAt.year == time.year:
-                return str(time.month - self.createdAt.month) + " months ago"
-
-        return self.createdAt
-
+    @property
+    def  initialWeight (self):
+            return self.currentWeight
     def __str__(self):
-        return self.email
+            return self.trainee.username
+       
+        
     
 class ReportPost(models.Model):
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
@@ -160,14 +152,14 @@ class ReportPost(models.Model):
 
     def __str__(self):
         return f"{self.createdAt } - {self.owner}"
-    
-    
+
+
 
  # comment model
 
 
 class Comment(models.Model):
-    owner = models.ForeignKey(Trainee , on_delete=models.CASCADE)
+    owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -176,8 +168,10 @@ class Comment(models.Model):
 
 # report comment model
 class ReportComment(models.Model):
+    
     content = models.TextField()
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
 
 
 class weightTracker(models.Model):

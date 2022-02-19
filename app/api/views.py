@@ -10,27 +10,32 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
+from rest_auth.views import LoginView ,APIView
+from rest_framework.permissions import *
 # Create your views here.
 
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
-    queryset = YogaExercise.objects.all()
+    queryset = YogaExercise.objects.all().order_by('id')
     serializer_class = YogaExerciseSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('id')
     serializer_class = PostSerializer
 
 
 class ReportPostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('id')
     serializer_class = ReportPostSerializer
 
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
+
     queryset = WorkoutPlan.objects.all().order_by('id')
     serializer_class = WorkoutPlanSerializer
+
+
 
 # yoga plans view
 class YogaPlanViewSet(viewsets.ModelViewSet):
@@ -40,30 +45,21 @@ class YogaPlanViewSet(viewsets.ModelViewSet):
 
 # comments view
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().order_by('id')
     serializer_class = CommentSerializer
 
 
 # report comments view
 class ReportCommentViewSet(viewsets.ModelViewSet):
-    queryset = ReportComment.objects.all()
+    queryset = ReportComment.objects.all().order_by('id')
     serializer_class = ReportCommentSerializer
        
 
 
 class WorkoutExViewSet(viewsets.ModelViewSet):
-    queryset = WorkoutExcercise.objects.all()
+    queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
-class TraineeViewSet(viewsets.ModelViewSet):
-    queryset = Trainee.objects.all()
-    serializer_class = TraineeSerializer
-    
-    
-class UsersViewSet(viewsets.ModelViewSet):
-    queryset = Trainee.objects.all()
-    serializer_class = UsersSerializer
 
-class weightViewSet(viewsets.ModelViewSet):
-    queryset = weightTracker.objects.all().order_by('id')
-    serializer_class = weightSerialzer
+    
+  

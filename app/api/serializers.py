@@ -32,15 +32,11 @@ class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
      )
     class Meta:
         model = WorkoutPlan
-        fields = ['id', 'name', 'numberOfEexercises',
-                  'totalTimeOfExercises','exercise', 'status', 'image']
+        fields = ('id','name','description','numberOfEexercises','exercise','createdAt', 'image','totalTimeOfExercises')
+
 
 
 # yoga plan serializer
-class UsersSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Users
-        fields = ['email','password', 'is_staff']
 
 
 # yoga plan serializer
@@ -68,14 +64,7 @@ class ReportCommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ReportComment
         fields = ('id', 'content')
-        
-        
-class TraineeSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Trainee
-        fields = ['id','age','fullName', 'age', 'initialWeight','email', 'password' , 'confirmPassword' , 'height' ,'medicalHistory']
-        
-        
+ 
 
 class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
