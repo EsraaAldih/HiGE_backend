@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_auth.views import LoginView ,APIView
 from django.contrib.auth import login
 from rest_framework.permissions import *
+
 # Create your views here.
 class TrainerRegistrationView(RegisterView):
     serializer_class = TrainerCustomRegistrationSerializer
@@ -48,7 +49,9 @@ class Login(LoginView):
 class UserDetail(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
-        print(request.user)
+        print("test",request.user)
+        if request.user.is_staff:
+            print(Trainer.objects.get(trainer_id=request.user.id))
         # try :
         #     print("req user id is",request.user.id)
         #     #print(Trainee.objects.all())
@@ -57,3 +60,4 @@ class UserDetail(APIView):
         # except:
         #     print("not a trainee")
         return Response ({"email":request.user.email})
+

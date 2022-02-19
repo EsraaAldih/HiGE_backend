@@ -26,20 +26,32 @@ class YogaExerciseViewSet(viewsets.ModelViewSet):
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    print('hereeeeeeeeeeeeeeeeeeeeeeee')
     queryset = Post.objects.all().order_by('id')
     serializer_class = PostSerializer
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsAuthenticated]
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+         print("user hitsme ",self.request.user," --- ",self.request.user.is_authenticated)
+        else :
+            print("this user isn't")
+            body = self.request.data
+        return serializer.save(owner=Trainer.objects.get(trainer_id=self.request.user.id))
+
+
+
+
 
 
 class ReportPostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all().order_by('id')
+    queryset = ReportPost.objects.all().order_by('id')
     serializer_class = ReportPostSerializer
 
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
-
-    queryset = WorkoutPlan.objects.all().order_by('id')
-    serializer_class = WorkoutPlanSerializer
-
+    queryset = WorkoutPlan.objects.all()
+    serializer_class = WorkoutPlansSerializer
 
 
 # yoga plans view
@@ -52,7 +64,19 @@ class YogaPlanViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('id')
     serializer_class = CommentSerializer
-
+    myuser={}
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = [IsAuthenticated]
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+         print("user hitsme ",self.request.user," --- ",self.request.user.is_authenticated)
+        else :
+            print("this user isn't")
+            body = self.request.data
+           
+            print(body)
+            # myuser=
+        return serializer.save(owner=Trainee.objects.get(trainee_id=self.request.user.id),post_id=1)
 
 # report comments view
 class ReportCommentViewSet(viewsets.ModelViewSet):
@@ -64,6 +88,7 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
+<<<<<<< HEAD
 
 class weightViewSet(viewsets.ModelViewSet):
     queryset = weightTracker.objects.all().order_by('id')
@@ -71,3 +96,27 @@ class weightViewSet(viewsets.ModelViewSet):
 
 
 
+=======
+    
+  
+@api_view()
+def null_view(request):
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UserDetail(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self,request,*args,**kwargs):
+        print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        if request.user.is_staff:
+            print(Trainer.objects.get(trainer_id=request.user.id))
+        # try :
+        #     print("req user id is",request.user.id)
+        #     #print(Trainee.objects.all())
+        #     user=Trainee.objects.get(trainee_id=request.user.id)
+        #     print(user)
+        # except:
+        #     print("not a trainee")
+        return Response ({"email":request.user.email})
+>>>>>>> 62b838b563ad295a982b491650c90bbf197b7cf9
