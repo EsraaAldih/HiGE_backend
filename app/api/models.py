@@ -130,8 +130,8 @@ class Trainee(models.Model):
    # def __str__(self):
     #    return self.trainee.name
 
-    #def __str__(self):
-     #   return self.trainee.username
+    def __str__(self):
+        return self.trainee.username
 
 
 class ReportPost(models.Model):
@@ -164,7 +164,7 @@ class ReportComment(models.Model):
 
 
 class weightTracker(models.Model):
-    traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True, unique=True)
+    traineeID = models.OneToOneField(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
     currentWeight = models.CharField(max_length=5, null=True)
 
     def save(self, *args, **kwargs):
