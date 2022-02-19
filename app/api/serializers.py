@@ -71,7 +71,9 @@ class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
         model = WorkoutExcercise
         fields = ['id','name','duration','description','gif']
 
-class weightSerialzer(serializers.HyperlinkedModelSerializer):
+
+class weightSerialzer(serializers.ModelSerializer):
     class Meta:
         model = weightTracker
-        fields = ['id','traineeID','currentWeight','weightStatus']
+        fields = ('id','currentWeight')
+

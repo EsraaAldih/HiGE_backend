@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
 # django User
@@ -13,6 +14,10 @@ from .serializers import *
 from rest_auth.views import LoginView ,APIView
 from rest_framework.permissions import *
 # Create your views here.
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.permissions import *
+from rest_framework.authentication import *
 
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
@@ -55,11 +60,14 @@ class ReportCommentViewSet(viewsets.ModelViewSet):
     serializer_class = ReportCommentSerializer
        
 
-
 class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
 
-    
-  
+class weightViewSet(viewsets.ModelViewSet):
+    queryset = weightTracker.objects.all().order_by('id')
+    serializer_class = weightSerialzer
+
+
+
