@@ -9,3 +9,5 @@ venv
 **/**/migrations
 **/pycache/
 **/**/pycache_
+app/api/__pycache__/
+app/api/migrations/
