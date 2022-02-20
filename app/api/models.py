@@ -104,8 +104,8 @@ class WorkoutPlan(models.Model):
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE ,default=1)
     image = models.ImageField(upload_to='images/', default='None/no-img.jpg')
     status = models.BooleanField(default=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def totalTimeOfExercises (self):
@@ -120,8 +120,9 @@ class WorkoutPlan(models.Model):
         for i in self.exercise.values():
             sum+=1
         return sum
-
-
+    def __str__(self):
+        return self.name + " --- "+self.description+"---"+self.owner.trainer.username
+    
 class Trainee(models.Model):
     trainee = models.OneToOneField(
       settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
@@ -172,4 +173,14 @@ class ReportComment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
 
+
+
+class weightTracker(models.Model):
+    traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
+    currentWeight = models.CharField(max_length=5, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.currentWeight is None:
+            self.currentWeight = self.traineeID.currentWeight
+        super(weightTracker, self).save(*args, **kwargs)
     

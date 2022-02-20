@@ -15,8 +15,8 @@ class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'text')
-
+        fields = ('id', 'text',)
+        
 
 class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -24,7 +24,7 @@ class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'text')
 
 
-class WorkoutPlansSerializer(serializers.HyperlinkedModelSerializer):
+class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
     # exercise = serializers.SlugRelatedField(
     #     many=True,
     #     slug_field='name',
@@ -32,7 +32,7 @@ class WorkoutPlansSerializer(serializers.HyperlinkedModelSerializer):
     #  )
     class Meta:
         model = WorkoutPlan
-        fields = ('id','name','description','numberOfEexercises','exercise','createdAt', 'image','totalTimeOfExercises')
+        fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
 
 
 # yoga plan serializer
