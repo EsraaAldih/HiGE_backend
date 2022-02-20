@@ -97,8 +97,8 @@ class WorkoutPlan(models.Model):
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE, default=1)
     image = models.ImageField(upload_to='images/', default='None/no-img.jpg')
     status = models.BooleanField(default=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def totalTimeOfExercises(self):
@@ -113,8 +113,9 @@ class WorkoutPlan(models.Model):
         for i in self.exercise.values():
             sum += 1
         return sum
-
-
+    def __str__(self):
+        return self.name + " --- "+self.description+"---"+self.owner.trainer.username
+    
 class Trainee(models.Model):
     trainee = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
@@ -177,3 +178,4 @@ class WaterTracker(models.Model):
     # traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
     # createdAt = models.DateTimeField(auto_now_add=True)
     # updatedAt = models.DateTimeField(auto_now=True)
+

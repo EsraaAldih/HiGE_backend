@@ -25,14 +25,14 @@ class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
-    exercise = serializers.SlugRelatedField(
-        many=True,
-        slug_field='name',
-        queryset=WorkoutExcercise.objects.all()
-     )
+    # exercise = serializers.SlugRelatedField(
+    #     many=True,
+    #     slug_field='name',
+    #     queryset=WorkoutExcercise.objects.all()
+    #  )
     class Meta:
         model = WorkoutPlan
-        fields = ('id','name','description','numberOfEexercises','exercise','createdAt', 'image','totalTimeOfExercises')
+        fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
 
 
 
