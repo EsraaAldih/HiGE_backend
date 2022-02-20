@@ -51,7 +51,7 @@ class ReportPostViewSet(viewsets.ModelViewSet):
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
     queryset = WorkoutPlan.objects.all()
-    serializer_class = WorkoutPlansSerializer
+    serializer_class = WorkoutPlanSerializer
 
 
 # yoga plans view
@@ -117,3 +117,11 @@ class UserDetail(APIView):
         # except:
         #     print("not a trainee")
         return Response ({"email":request.user.email})
+
+class WorkoutExViewSet(viewsets.ModelViewSet):
+    queryset = WorkoutExcercise.objects.all().order_by('id')
+    serializer_class = WorkoutExSerializer
+    
+class WaterTrackerViewSet(viewsets.ModelViewSet):
+    queryset = WaterTracker.objects.all().order_by('id')
+    serializer_class = WaterTrackerSerializer

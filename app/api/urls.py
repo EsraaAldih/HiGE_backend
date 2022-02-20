@@ -13,6 +13,7 @@ router.register(r'comments', CommentViewSet)
 router.register(r'commentreports', ReportCommentViewSet)
 router.register(r'workoutexersices', WorkoutExViewSet)
 router.register(r'weight', weightViewSet)
+router.register(r'water', WaterTrackerViewSet)
 
 urlpatterns = [
 
