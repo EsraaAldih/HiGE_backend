@@ -18,5 +18,8 @@ urlpatterns = [
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
-    path('me/',UserDetail.as_view())
+    path('yogafavplan/',getTraineeFavYogaPlan.as_view()),
+    path('workoutfavplan/',getTraineeFavWorkoutPlan .as_view()),
+    path('addYogaPlan/',addYogaPlan.as_view()),
+    path('addWorkoutPlan/',addWorkoutPlan.as_view()),
 ]
