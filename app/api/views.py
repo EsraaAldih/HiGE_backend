@@ -128,6 +128,22 @@ class getTraineeFavYogaPlan (APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        if request.user.is_staff:
+            print(Trainer.objects.get(trainer_id=request.user.id))
+        # try :
+        #     print("req user id is",request.user.id)
+        #     #print(Trainee.objects.all())
+        #     user=Trainee.objects.get(trainee_id=request.user.id)
+        #     print(user)
+        # except:
+        #     print("not a trainee")
+        return Response ({"email":request.user.email})
+
+class WorkoutExViewSet(viewsets.ModelViewSet):
+    queryset = WorkoutExcercise.objects.all().order_by('id')
+    serializer_class = WorkoutExSerializer
+    
+
         owner=Trainee.objects.get(trainee_id=self.request.user.id)
         try:
             myYogaPlan=YogaPlan.objects.filter(pk=owner.yogaPlan.id).first()
@@ -185,3 +201,6 @@ class addWorkoutPlan(APIView):
             return JsonResponse({'errors':"workout plan is added"}, status=200)
         except:
             return JsonResponse({'errors':"this plan doesn't exist"}, status=400)
+class WaterTrackerViewSet(viewsets.ModelViewSet):
+    queryset = WaterTracker.objects.all().order_by('id')
+    serializer_class = WaterTrackerSerializer

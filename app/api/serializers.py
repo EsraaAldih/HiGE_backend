@@ -77,3 +77,8 @@ class weightSerialzer(serializers.ModelSerializer):
         model = weightTracker
         fields = ('id','currentWeight')
 
+class WaterTrackerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = WaterTracker
+        fields = ['id','currentAmount']
+   
