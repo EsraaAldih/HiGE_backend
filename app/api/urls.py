@@ -12,7 +12,8 @@ router.register(r'yogaplans', YogaPlanViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'commentreports', ReportCommentViewSet)
 router.register(r'workoutexersices', WorkoutExViewSet)
-router.register(r'water', WaterTrackerViewSet)
+
+
 
 urlpatterns = [
 
