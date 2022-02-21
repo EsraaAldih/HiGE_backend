@@ -172,3 +172,10 @@ class weightTracker(models.Model):
         if self.currentWeight is None:
             self.currentWeight = self.traineeID.currentWeight
         super(weightTracker, self).save(*args, **kwargs)
+
+class WaterTracker(models.Model):
+    currentAmount = models.FloatField(default=0)
+    # traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
+    # createdAt = models.DateTimeField(auto_now_add=True)
+    # updatedAt = models.DateTimeField(auto_now=True)
+
