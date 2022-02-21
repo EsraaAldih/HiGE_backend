@@ -1,4 +1,5 @@
 import json
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
 # django User
@@ -18,7 +19,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import *
 from rest_framework.authentication import *
-
+from django.core import serializers
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
     queryset = YogaExercise.objects.all().order_by('id')
@@ -51,7 +52,7 @@ class ReportPostViewSet(viewsets.ModelViewSet):
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
     queryset = WorkoutPlan.objects.all()
-    serializer_class = WorkoutPlansSerializer
+    serializer_class = WorkoutPlanSerializer
 
 
 # yoga plans view
@@ -84,36 +85,122 @@ class ReportCommentViewSet(viewsets.ModelViewSet):
     serializer_class = ReportCommentSerializer
        
 
+
 class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
-
-class weightViewSet(viewsets.ModelViewSet):
-    queryset = weightTracker.objects.all().order_by('id')
-    serializer_class = weightSerialzer
-
-
-
     
-  
+class TraineeCurrentWeight(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+       
+        try:
+            currentWeight=(weightTracker.objects.get(traineeID_id=owner.id)).currentWeight
+            return JsonResponse({'result': currentWeight}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+        
+    def put(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        cw = body['currentWeight']
+        print("currentWeight: ",cw)
+      
+        try:
+            traineeWeight = weightTracker.objects.get(traineeID_id=owner.id)
+            traineeWeight.currentWeight=cw
+            traineeWeight.save()
+            return JsonResponse({'result': 'currentWeight is updated correctly'}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
 @api_view()
 def null_view(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
-class UserDetail(APIView):
+# class getTraineeFavouritePlans(APIView):
+#     permission_classes = [IsAuthenticated]
+#     def get(self,request,*args,**kwargs):
+#         print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+#         owner=Trainee.objects.get(trainee_id=self.request.user.id)
+#         try:
+#             myYogaPlan=YogaPlan.objects.filter(pk=owner.yogaPlan.id).first()
+#         except:
+#             myYogaPlan={}
+#         try:
+#              myWorkoutPlan=WorkoutPlan.objects.filter(pk=owner.workoutPlan.id).first()
+#         except:
+#             myWorkoutPlan={}
+#         tmpJson = serializers.serialize("json",{myYogaPlan,myWorkoutPlan})
+#         tmpObj = json.loads(tmpJson)
+
+    
+#         return  JsonResponse({'result':tmpJson}, status=200)
+    
+#get trainee yoga plan
+class getTraineeFavYogaPlan (APIView):
     permission_classes = [IsAuthenticated]
-    def post(self,request,*args,**kwargs):
+    def get(self,request,*args,**kwargs):
         print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
-        if request.user.is_staff:
-            print(Trainer.objects.get(trainer_id=request.user.id))
-        # try :
-        #     print("req user id is",request.user.id)
-        #     #print(Trainee.objects.all())
-        #     user=Trainee.objects.get(trainee_id=request.user.id)
-        #     print(user)
-        # except:
-        #     print("not a trainee")
-        return Response ({"email":request.user.email})
+        owner=Trainee.objects.get(trainee_id=self.request.user.id)
+        try:
+            myYogaPlan=YogaPlan.objects.filter(pk=owner.yogaPlan.id).first()
+            tmpJson = serializers.serialize("json",{myYogaPlan})
+            tmpObj = json.loads(tmpJson)
+            return  JsonResponse({'result':tmpJson}, status=200)
+        except:
+            myYogaPlan={}
+            return  JsonResponse({'result':"yoga isn't chosen yet"}, status=200)
+        
+#get trainee workout plan
+class getTraineeFavWorkoutPlan (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainee.objects.get(trainee_id=self.request.user.id)
+        try:
+            myWorkoutPlan=YogaPlan.objects.filter(pk=owner.workoutPlan.id).first()
+            tmpJson = serializers.serialize("json",{myWorkoutPlan})
+            tmpObj = json.loads(tmpJson)
+            return  JsonResponse({'result':tmpJson}, status=200)
+        except:
+            myYogaPlan={}
+            return  JsonResponse({'result':"workout isn't chosen yet"}, status=200)
+        
+        
+class addYogaPlan(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self,request,*args,**kwargs):
+        # print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainee.objects.get(trainee_id=self.request.user.id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        planId = body['id']
+        print("yoga id ",planId)
+        try:
+            owner.yogaPlan_id=planId
+            owner.save()
+            return JsonResponse({'errors':"yoga plan is added"}, status=200)
+        except:
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
+
+class addWorkoutPlan(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self,request,*args,**kwargs):
+        # print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainee.objects.get(trainee_id=self.request.user.id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        planId = body['id']
+        print("yoga id ",planId)
+        try:
+            owner.workoutPlan_id=planId
+            owner.save()
+            return JsonResponse({'errors':"workout plan is added"}, status=200)
+        except:
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
