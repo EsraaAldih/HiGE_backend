@@ -92,6 +92,7 @@ class WorkoutExViewSet(viewsets.ModelViewSet):
 class weightViewSet(viewsets.ModelViewSet):
     queryset = weightTracker.objects.all().order_by('id')
     serializer_class = weightSerialzer
+    permission_classes = [IsAuthenticated]
 
 
 
