@@ -27,7 +27,6 @@ class YogaExerciseViewSet(viewsets.ModelViewSet):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    print('hereeeeeeeeeeeeeeeeeeeeeeee')
     queryset = Post.objects.all().order_by('id')
     serializer_class = PostSerializer
     authentication_classes = (SessionAuthentication, TokenAuthentication)
