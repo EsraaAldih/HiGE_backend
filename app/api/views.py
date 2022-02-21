@@ -84,19 +84,38 @@ class ReportCommentViewSet(viewsets.ModelViewSet):
     serializer_class = ReportCommentSerializer
        
 
+
 class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
     
-
-class weightViewSet(viewsets.ModelViewSet):
-    queryset = weightTracker.objects.all().order_by('id')
-    serializer_class = weightSerialzer
-
-
-
     
-  
+class TraineeCurrentWeight(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+       
+        try:
+            currentWeight=(weightTracker.objects.get(traineeID_id=owner.id)).currentWeight
+            return JsonResponse({'result': currentWeight}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+        
+    def put(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        cw = body['currentWeight']
+        print("currentWeight: ",cw)
+      
+        try:
+            traineeWeight = weightTracker.objects.get(traineeID_id=owner.id)
+            traineeWeight.currentWeight=cw
+            traineeWeight.save()
+            return JsonResponse({'result': 'currentWeight is updated correctly'}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
 @api_view()
 def null_view(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -167,7 +186,7 @@ class addYogaPlan(APIView):
             owner.save()
             return JsonResponse({'errors':"yoga plan is added"}, status=200)
         except:
-            return JsonResponse({'errors':"this plan doesn't exist"}, status=400)
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
 
 class addWorkoutPlan(APIView):
     permission_classes = [IsAuthenticated]
@@ -183,8 +202,4 @@ class addWorkoutPlan(APIView):
             owner.save()
             return JsonResponse({'errors':"workout plan is added"}, status=200)
         except:
-            return JsonResponse({'errors':"this plan doesn't exist"}, status=400)
-
-class WaterTrackerViewSet(viewsets.ModelViewSet):
-    queryset = WaterTracker.objects.all().order_by('id')
-    serializer_class = WaterTrackerSerializer
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
