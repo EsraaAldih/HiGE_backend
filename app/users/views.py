@@ -60,4 +60,3 @@ class UserDetail(APIView):
         # except:
         #     print("not a trainee")
         return Response ({"email":request.user.email})
-
