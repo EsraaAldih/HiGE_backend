@@ -27,3 +27,4 @@ urlpatterns = [
     path('water/',WaterViewSet.as_view()),
     path('TraineeCurrentWeight/',TraineeCurrentWeight.as_view()),
 
+]
