@@ -97,8 +97,8 @@ class WorkoutPlan(models.Model):
     owner = models.ForeignKey(Trainer, on_delete=models.CASCADE, default=1)
     image = models.ImageField(upload_to='images/', default='None/no-img.jpg')
     status = models.BooleanField(default=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def totalTimeOfExercises(self):
@@ -171,4 +171,7 @@ class weightTracker(models.Model):
         if self.currentWeight is None:
             self.currentWeight = self.traineeID.currentWeight
         super(weightTracker, self).save(*args, **kwargs)
+
+
+
 

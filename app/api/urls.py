@@ -14,9 +14,16 @@ router.register(r'commentreports', ReportCommentViewSet)
 router.register(r'workoutexersices', WorkoutExViewSet)
 router.register(r'weight', weightViewSet)
 
+
+
 urlpatterns = [
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
-    path('me/',UserDetail.as_view())
+    path('yogafavplan/',getTraineeFavYogaPlan.as_view()),
+    path('workoutfavplan/',getTraineeFavWorkoutPlan .as_view()),
+    path('addYogaPlan/',addFavYogaPlan.as_view()),
+    path('addWorkoutPlan/',addFavWorkoutPlan.as_view()),
+    path('deleteyogaplan/',deleteFavYogaPlan.as_view()),
+    path('deleteworkoutplan/',deleteFavWorkoutPlan.as_view()),
 ]

@@ -32,7 +32,7 @@ class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
      )
     class Meta:
         model = WorkoutPlan
-        fields = ('id','name','description','numberOfEexercises','exercise','createdAt', 'image','totalTimeOfExercises')
+        fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
 
 
 
@@ -76,4 +76,8 @@ class weightSerialzer(serializers.ModelSerializer):
     class Meta:
         model = weightTracker
         fields = ('id','currentWeight')
+
+
+
+
 
