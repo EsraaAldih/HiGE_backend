@@ -1,7 +1,7 @@
 #nodemodules
 node_modules
 #venv
-venv
+venv/
 # Byte-compiled / optimized / DLL files __pycache__/ *.py[cod] *$py.class */__pycache__/*
 /__pycache__/
 /__migrations__/
@@ -10,7 +10,11 @@ venv
 **/pycache/
 **/**/pycache_
 app/api/__pycache__/
+app/app/__pycache__/
 app/api/migrations/
 app/users/__pycache__/
 app/users/migrations/
+<<<<<<< HEAD
 app/app/_pycache_/
+=======
+>>>>>>> c9c1849a4a7db83a191cea52cb3aee6ee2333c6d

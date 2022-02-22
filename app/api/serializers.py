@@ -75,10 +75,10 @@ class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
 class weightSerialzer(serializers.ModelSerializer):
     class Meta:
         model = weightTracker
-        fields = ('id','currentWeight')
+        fields = ('id','currentWeight','numOfLogin')
 
-class WaterTrackerSerializer(serializers.HyperlinkedModelSerializer):
+class WaterTrackerSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaterTracker
-        fields = ['id','currentAmount']
-   
+        fields = ['id','currentAmount' ,'traineeID']
+
