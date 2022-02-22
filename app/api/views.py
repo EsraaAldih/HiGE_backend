@@ -12,7 +12,7 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
-from rest_auth.views import LoginView ,APIView
+from rest_auth.views import LoginView, APIView
 from rest_framework.permissions import *
 # Create your views here.
 from rest_framework.decorators import api_view
@@ -20,7 +20,6 @@ from rest_framework import status
 from rest_framework.permissions import *
 from rest_framework.authentication import *
 from django.core import serializers
-import schedule;
 
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
@@ -33,17 +32,15 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = [IsAuthenticated]
+
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-         print("user hitsme ",self.request.user," --- ",self.request.user.is_authenticated)
-        else :
+            print("user hitsme ", self.request.user, " --- ",
+                  self.request.user.is_authenticated)
+        else:
             print("this user isn't")
             body = self.request.data
         return serializer.save(owner=Trainer.objects.get(trainer_id=self.request.user.id))
-
-
-
-
 
 
 class ReportPostViewSet(viewsets.ModelViewSet):
@@ -66,25 +63,29 @@ class YogaPlanViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('id')
     serializer_class = CommentSerializer
-    myuser={}
+    myuser = {}
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = [IsAuthenticated]
+
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-         print("user hitsme ",self.request.user," --- ",self.request.user.is_authenticated)
-        else :
+            print("user hitsme ", self.request.user, " --- ",
+                  self.request.user.is_authenticated)
+        else:
             print("this user isn't")
             body = self.request.data
-           
+
             print(body)
             # myuser=
-        return serializer.save(owner=Trainee.objects.get(trainee_id=self.request.user.id),post_id=1)
+        return serializer.save(owner=Trainee.objects.get(trainee_id=self.request.user.id), post_id=1)
 
 # report comments view
+
+
 class ReportCommentViewSet(viewsets.ModelViewSet):
     queryset = ReportComment.objects.all().order_by('id')
     serializer_class = ReportCommentSerializer
-       
+
 
 
 class WorkoutExViewSet(viewsets.ModelViewSet):
@@ -128,25 +129,37 @@ def null_view(request):
 
 
 
-# class getTraineeFavouritePlans(APIView):
-#     permission_classes = [IsAuthenticated]
-#     def get(self,request,*args,**kwargs):
-#         print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
-#         owner=Trainee.objects.get(trainee_id=self.request.user.id)
-#         try:
-#             myYogaPlan=YogaPlan.objects.filter(pk=owner.yogaPlan.id).first()
-#         except:
-#             myYogaPlan={}
-#         try:
-#              myWorkoutPlan=WorkoutPlan.objects.filter(pk=owner.workoutPlan.id).first()
-#         except:
-#             myWorkoutPlan={}
-#         tmpJson = serializers.serialize("json",{myYogaPlan,myWorkoutPlan})
-#         tmpObj = json.loads(tmpJson)
 
-    
-#         return  JsonResponse({'result':tmpJson}, status=200)
-    
+
+class deleteFavYogaPlan (APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+       
+        try:
+            owner.yogaPlan_id = None
+            owner.save()
+            print(owner.yogaPlan_id)
+            return JsonResponse({'result': "deleted sucess"}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
+
+class deleteFavWorkoutPlan (APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+       
+        try:
+            owner.workoutPlan_id = None
+            owner.save()
+            print(owner.workoutPlan_id)
+            return JsonResponse({'result': "deleted sucess"}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
 #get trainee yoga plan
 class getTraineeFavYogaPlan (APIView):
     permission_classes = [IsAuthenticated]

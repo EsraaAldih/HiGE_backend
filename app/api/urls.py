@@ -15,12 +15,16 @@ router.register(r'workoutexersices', WorkoutExViewSet)
 
 
 
+
+
 urlpatterns = [
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('yogafavplan/',getTraineeFavYogaPlan.as_view()),
     path('workoutfavplan/',getTraineeFavWorkoutPlan .as_view()),
+    path('deleteyogaplan/',deleteFavYogaPlan.as_view()),
+    path('deleteworkoutplan/',deleteFavWorkoutPlan.as_view()),
     path('addYogaPlan/',addYogaPlan.as_view()),
     path('addWorkoutPlan/',addWorkoutPlan.as_view()),
     path('TraineeCurrentWeight/',TraineeCurrentWeight.as_view()),
