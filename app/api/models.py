@@ -167,6 +167,7 @@ class ReportComment(models.Model):
 class weightTracker(models.Model):
     traineeID = models.OneToOneField(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
     currentWeight = models.CharField(max_length=5, null=True)
+    numOfLogin = models.IntegerField(default=1)
 
     def save(self, *args, **kwargs):
         if self.currentWeight is None:

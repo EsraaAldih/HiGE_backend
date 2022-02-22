@@ -20,6 +20,8 @@ from rest_framework import status
 from rest_framework.permissions import *
 from rest_framework.authentication import *
 from django.core import serializers
+import schedule;
+
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
     queryset = YogaExercise.objects.all().order_by('id')
@@ -97,7 +99,9 @@ class TraineeCurrentWeight(APIView):
        
         try:
             currentWeight=(weightTracker.objects.get(traineeID_id=owner.id)).currentWeight
-            return JsonResponse({'result': currentWeight}, status=200)
+            currentCounter = (weightTracker.objects.get(traineeID_id=owner.id)).numOfLogin
+            return JsonResponse({'result': currentWeight , 
+                                 'counter':currentCounter}, status=200)
         except:
             return JsonResponse({'result': "something went wrong"}, status=200)
         
@@ -106,11 +110,13 @@ class TraineeCurrentWeight(APIView):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         cw = body['currentWeight']
+        currentCounter = body['currentCounter']
         print("currentWeight: ",cw)
       
         try:
             traineeWeight = weightTracker.objects.get(traineeID_id=owner.id)
             traineeWeight.currentWeight=cw
+            traineeWeight.numOfLogin=currentCounter
             traineeWeight.save()
             return JsonResponse({'result': 'currentWeight is updated correctly'}, status=200)
         except:
