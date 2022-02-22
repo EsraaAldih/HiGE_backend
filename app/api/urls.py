@@ -13,7 +13,6 @@ router.register(r'comments', CommentViewSet)
 router.register(r'commentreports', ReportCommentViewSet)
 router.register(r'workoutexersices', WorkoutExViewSet)
 router.register(r'weight', weightViewSet)
-router.register(r'water', WaterTrackerViewSet)
 
 urlpatterns = [
 
@@ -23,4 +22,6 @@ urlpatterns = [
     path('workoutfavplan/',getTraineeFavWorkoutPlan .as_view()),
     path('addYogaPlan/',addYogaPlan.as_view()),
     path('addWorkoutPlan/',addWorkoutPlan.as_view()),
+    path('water/',WaterViewSet.as_view()),
+    
 ]
