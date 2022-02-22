@@ -8,6 +8,7 @@ from api.models import Trainee,Trainer
 from django.contrib.auth import authenticate
 from rest_auth.serializers import UserDetailsSerializer as DefaultUserDetailsSerializer
 from rest_auth.models import TokenModel
+from api.models import weightTracker
 
 class ChoicesField(serializers.ChoiceField):
   
@@ -106,11 +107,16 @@ class TraineeCustomRegistrationSerializer(RegisterSerializer):
                 age=self.cleaned_data.get('age'),
                 # status=self.cleaned_data['status'],
                 medicalHistory=self.cleaned_data['medicalHistory'],
-                
                 )
-       
+        
         user.save()
         trainee.save()
+        traineeWeight=weightTracker(
+           traineeID_id=trainee.id,
+           currentWeight =trainee.currentWeight
+        )
+        traineeWeight.save()
+        
         return user
 
 ####################################################################

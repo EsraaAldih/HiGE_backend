@@ -113,8 +113,9 @@ class WorkoutPlan(models.Model):
         for i in self.exercise.values():
             sum += 1
         return sum
-
-
+    def __str__(self):
+        return self.name + " --- "+self.description+"---"+self.owner.trainer.username
+    
 class Trainee(models.Model):
     trainee = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
@@ -166,12 +167,16 @@ class ReportComment(models.Model):
 class weightTracker(models.Model):
     traineeID = models.OneToOneField(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
     currentWeight = models.CharField(max_length=5, null=True)
+    numOfLogin = models.IntegerField(default=1)
 
     def save(self, *args, **kwargs):
         if self.currentWeight is None:
             self.currentWeight = self.traineeID.currentWeight
         super(weightTracker, self).save(*args, **kwargs)
 
-
-
+class WaterTracker(models.Model):
+    currentAmount = models.FloatField(default=0)
+    # traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now=True)
 

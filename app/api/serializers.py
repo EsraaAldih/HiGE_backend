@@ -25,11 +25,11 @@ class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
-    exercise = serializers.SlugRelatedField(
-        many=True,
-        slug_field='name',
-        queryset=WorkoutExcercise.objects.all()
-     )
+    # exercise = serializers.SlugRelatedField(
+    #     many=True,
+    #     slug_field='name',
+    #     queryset=WorkoutExcercise.objects.all()
+    #  )
     class Meta:
         model = WorkoutPlan
         fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
@@ -75,9 +75,10 @@ class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
 class weightSerialzer(serializers.ModelSerializer):
     class Meta:
         model = weightTracker
-        fields = ('id','currentWeight')
+        fields = ('id','currentWeight','numOfLogin')
 
-
-
-
-
+class WaterTrackerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = WaterTracker
+        fields = ['id','currentAmount']
+   

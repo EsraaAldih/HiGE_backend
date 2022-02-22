@@ -58,4 +58,3 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
 
 
-
