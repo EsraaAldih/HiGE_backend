@@ -35,6 +35,7 @@ class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
 
 
+
 # yoga plan serializer
 
 
@@ -69,3 +70,15 @@ class WorkoutExSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = WorkoutExcercise
         fields = ['id','name','duration','description','gif']
+
+
+class weightSerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = weightTracker
+        fields = ('id','currentWeight','numOfLogin')
+
+class WaterTrackerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WaterTracker
+        fields = ['id','currentAmount' ,'traineeID']
+
