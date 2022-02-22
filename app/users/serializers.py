@@ -159,7 +159,7 @@ class LoginUserSerializer(serializers.Serializer):
 class DefaultUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewUser
-        fields = ('id', 'email','is_staff')
+        fields = ('id', 'email','is_staff','username')
 
 class CustomTokenSerializer(serializers.ModelSerializer):
     user = DefaultUserDetailsSerializer(read_only=True)
@@ -167,4 +167,5 @@ class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = TokenModel
         fields = ('key', 'user', )
-    
+
+
