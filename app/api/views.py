@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 
+
+
 from .models import *
 from .serializers import *
 
@@ -20,7 +22,7 @@ from rest_framework import status
 from rest_framework.permissions import *
 from rest_framework.authentication import *
 from django.core import serializers
-
+from users.models import NewUser
 class YogaExerciseViewSet(viewsets.ModelViewSet):
     queryset = YogaExercise.objects.all().order_by('id')
     serializer_class = YogaExerciseSerializer
@@ -162,7 +164,7 @@ class addYogaPlan(APIView):
             owner.save()
             return JsonResponse({'errors':"yoga plan is added"}, status=200)
         except:
-            return JsonResponse({'errors':"this plan doesn't exist"}, status=400)
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
 
 class addWorkoutPlan(APIView):
     permission_classes = [IsAuthenticated]
@@ -178,4 +180,175 @@ class addWorkoutPlan(APIView):
             owner.save()
             return JsonResponse({'errors':"workout plan is added"}, status=200)
         except:
-            return JsonResponse({'errors':"this plan doesn't exist"}, status=400)
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
+
+
+class deleteWorkoutPlan(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self,request,*args,**kwargs):
+        # print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainee.objects.get(trainee_id=self.request.user.id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        planId = body['id']
+        print("yoga id ",planId)
+        try:
+            owner.workoutPlan_id=planId
+            owner.save()
+            return JsonResponse({'errors':"workout plan is added"}, status=200)
+        except:
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
+        
+        
+class deleteFavYogaPlan (APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+       
+        try:
+            owner.yogaPlan_id = None
+            owner.save()
+            print(owner.yogaPlan_id)
+            return JsonResponse({'result': "deleted sucess"}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+        
+class TraineeCurrentWeight(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+       
+        try:
+            currentWeight=(weightTracker.objects.get(traineeID_id=owner.id)).currentWeight
+            return JsonResponse({'result': currentWeight}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+        
+     
+    def put(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        cw = body['cw']
+        print("yoga id ",cw)
+      
+        try:
+            currentWeight=weightTracker.objects.get(traineeID_id=owner.id)
+            currentWeight.currentWeight=cw
+            currentWeight.save()
+            return JsonResponse({'result': 'currentWeight is updated correctly'}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
+
+class WaterViewSet(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self,request,args=None,*kwargs):
+            # print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+            trainee=Trainee.objects.get(trainee_id=self.request.user.id)
+            traineeID= trainee.id
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            currentAmount = body['count']
+            print("current Amount ",currentAmount,traineeID)
+            try:
+                watertraker = WaterTracker.objects.get(traineeID_id =traineeID)
+                watertraker.currentAmount =currentAmount
+                watertraker.save()
+                return JsonResponse({'results':"currentAmount is added"}, status=200)
+            except:
+                return JsonResponse({'errors':"currentAmount doesn't exist"}, status=200)
+
+    
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+          
+        try:
+            watertraker=(WaterTracker.objects.get(traineeID_id=owner.id)).currentAmount
+
+            return JsonResponse({'result': watertraker}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+        
+        
+        
+        
+class getTrainerPosts (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainer.objects.get(trainer_id=self.request.user.id)
+        print(owner.id)
+        try:
+            posts=list(Post.objects.filter(owner_id=owner.id))
+            # print(posts)
+            tmpJson = serializers.serialize("json",posts)
+            # print(tmpJson)
+            tmpObj = json.loads(tmpJson)
+            return  JsonResponse({'result':tmpObj}, status=200)
+        except:
+            return  JsonResponse({'result':"you haven't added any post yet"}, status=200)
+
+class getPost (APIView):
+    def post(self,request,*args,**kwargs):
+        
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        postId = body['id']
+        print('post id ', postId)
+     
+        try:
+            post=Post.objects.get(pk=postId)
+            print("test post ",self.request.user.is_authenticated,self.request.user.is_staff)
+            owner=Trainer.objects.get(pk=post.owner_id)
+            user=NewUser.objects.get(pk=owner.trainer_id)
+            print(owner.id)
+            print(user.username)
+            username=user.username
+            tmpJson = serializers.serialize("json",{post})
+            print(tmpJson)
+            tmpObj = json.loads(tmpJson)
+            return  JsonResponse({'result':tmpObj,'username':username}, status=200)
+        except:
+            return  JsonResponse({'result':"this post doen't exist"}, status=200)
+        
+        
+        
+class getPostComments (APIView):
+    def post(self,request,*args,**kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        postId = body['id']
+        print('post id for comments', postId)
+     
+        print("test get comments ",self.request.user.is_authenticated,self.request.user.is_staff)
+       
+        try:
+            comments=list(Comment.objects.filter(post_id=postId))
+            print(comments)
+            tmpJson = serializers.serialize("json",comments)
+            print("tmp ",tmpJson)
+            tmpObj = json.loads(tmpJson)
+            return  JsonResponse({'result':tmpObj}, status=200)
+        except:
+            return  JsonResponse({'result':"this post has no comments"}, status=200)
+        
+class addPostComment (APIView):
+    def post(self,request,*args,**kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        postId = body['id']
+        content = body['content']
+        trainee=Trainee.objects.get(trainee_id=self.request.user.id)
+        traineeID= trainee.id
+        print('post id for comments', postId,content)
+     
+        print("test post comment ",self.request.user.is_authenticated,self.request.user.is_staff)
+       
+        try:
+            comment=Comment(post_id=postId,content=content,owner_id=traineeID)
+            comment.save()
+            return  JsonResponse({'result':'comment added '}, status=200)
+        except:
+            return  JsonResponse({'result':"this post has no comments"}, status=200)

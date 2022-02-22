@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from .serializers import *
 from rest_auth.registration.views import RegisterView
@@ -5,6 +6,7 @@ from rest_framework.response import Response
 from rest_auth.views import LoginView ,APIView
 from django.contrib.auth import login
 from rest_framework.permissions import *
+from django.core import serializers
 
 # Create your views here.
 class TrainerRegistrationView(RegisterView):
@@ -46,12 +48,13 @@ class Login(LoginView):
 
 
 
-class UserDetail(APIView):
+class TraineeDetail(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         print("test",request.user)
-        if request.user.is_staff:
-            print(Trainer.objects.get(trainer_id=request.user.id))
+        trainer=Trainer.objects.filter(trainer_id=request.user.id).first()
+        tmpJson = serializers.serialize("json",{trainer})
+        tmpObj = json.loads(tmpJson)
         # try :
         #     print("req user id is",request.user.id)
         #     #print(Trainee.objects.all())
@@ -59,5 +62,5 @@ class UserDetail(APIView):
         #     print(user)
         # except:
         #     print("not a trainee")
-        return Response ({"email":request.user.email})
+        return Response ({'trainer':tmpObj})
 
