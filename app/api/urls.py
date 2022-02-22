@@ -14,9 +14,6 @@ router.register(r'commentreports', ReportCommentViewSet)
 router.register(r'workoutexersices', WorkoutExViewSet)
 
 
-
-
-
 urlpatterns = [
 
     path('', include(router.urls)),
@@ -27,5 +24,6 @@ urlpatterns = [
     path('deleteworkoutplan/',deleteFavWorkoutPlan.as_view()),
     path('addYogaPlan/',addYogaPlan.as_view()),
     path('addWorkoutPlan/',addWorkoutPlan.as_view()),
+    path('water/',WaterViewSet.as_view()),
     path('TraineeCurrentWeight/',TraineeCurrentWeight.as_view()),
-]
+

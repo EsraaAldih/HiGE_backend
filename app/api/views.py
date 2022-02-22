@@ -221,4 +221,42 @@ class addWorkoutPlan(APIView):
             owner.save()
             return JsonResponse({'errors':"workout plan is added"}, status=200)
         except:
+            return JsonResponse({'errors':"this plan doesn't exist"}, status=400)
+
+# class WaterTrackerViewSet(viewsets.ModelViewSet):
+#     permission_classes = [IsAuthenticated]
+#     queryset = WaterTracker.objects.all().order_by('id')
+#     serializer_class = WaterTrackerSerializer
+
+class WaterViewSet(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self,request,*args,**kwargs):
+            # print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+            trainee=Trainee.objects.filter(trainee_id=self.request.user.id).first()
+            traineeID= trainee.id
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            currentAmount = body['count']
+            print("current Amount ",currentAmount)
+            try:
+                water_traker = WaterTracker.objects.get(traineeID_id=traineeID)
+                water_traker.currentAmount =currentAmount
+                water_traker.save()
+                return JsonResponse({'result':"currentAmount is added"}, status=200)
+            except:
+                return JsonResponse({'errors':"currentAmount doesn't exist"}, status=400)
+
+    
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        print("esss",owner)
+       
+        try:
+            # currentAmount=(weightTracker.objects.get(traineeID_id=owner.id)).currentAmount
+            currentAmount=(WaterTracker.objects.filter(traineeID_id=owner.id)).first().currentAmount
+            print(currentAmount)
+            return JsonResponse({'result': currentAmount}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+    
             return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
