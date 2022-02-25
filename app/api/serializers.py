@@ -4,19 +4,17 @@ from rest_framework import serializers
 from .models import *
 
 
-
-
 class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaExercise
-        fields = ('id', 'name', 'details', 'duration','image')
+        fields = ('id', 'name', 'details', 'duration', 'image')
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'text','createdAt',)
-        
+        fields = ('id', 'text', 'createdAt',)
+
 
 class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -25,11 +23,12 @@ class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
-    # exercise = serializers.SlugRelatedField(
-    #     many=True,
-    #     slug_field='name',
-    #     queryset=WorkoutExcercise.objects.all()
-    #  )
+    exercise = serializers.SlugRelatedField(
+         many=True,
+         slug_field='name',
+         queryset=WorkoutExcercise.objects.all()
+      )
+
     class Meta:
         model = WorkoutPlan
         fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
@@ -77,6 +76,11 @@ class weightSerialzer(serializers.ModelSerializer):
         model = weightTracker
         fields = ('id','currentWeight','numOfLogin')
 
+class weightHistorySerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightTrackerHistory
+        fields = ('id','traineeWeight','created_at')
+        
 class WaterTrackerSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaterTracker
