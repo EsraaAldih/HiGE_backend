@@ -186,4 +186,10 @@ class WeightTrackerHistory(models.Model):
     traineeWeight =  models.FloatField(default=0)
     created_at = models.DateField(auto_now_add=True)
 
+class WaterTrackerHistory(models.Model):
+    dailyAmount = models.FloatField(default=0)
+    traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
