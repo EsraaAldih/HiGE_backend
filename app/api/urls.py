@@ -31,6 +31,7 @@ urlpatterns = [
     path('getPostComments/',getPostComments.as_view()),
     path('addPostComment/',addPostComment.as_view()),
     path('TraineeCurrentWeight/',TraineeCurrentWeight.as_view()),
+    path('TraineeWeightHistory/',TraineeWeightHistory.as_view())
 
     
 ]

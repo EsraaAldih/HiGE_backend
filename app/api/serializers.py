@@ -5,7 +5,6 @@ from .models import *
 
 
 
-
 class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaExercise
@@ -82,3 +81,7 @@ class WaterTrackerSerializer(serializers.ModelSerializer):
         model = WaterTracker
         fields = ['id','currentAmount' ,'traineeID']
 
+class weightHistorySerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightTrackerHistory
+        fields = ('id','traineeWeight','created_at')

@@ -371,3 +371,30 @@ class addPostComment (APIView):
             return  JsonResponse({'result':'comment added '}, status=200)
         except:
             return  JsonResponse({'result':"this post has no comments"}, status=200)
+
+
+class TraineeWeightHistory(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        try:
+            traineeHistory = list(WeightTrackerHistory.objects.filter(traineeID_id=owner.id))
+            tmpJson = serializers.serialize("json", traineeHistory)
+            tmpObj = json.loads(tmpJson)
+            return JsonResponse({'result': tmpObj}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
+    def post(self, request, *args, **kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        traineeID = body['id']
+        cw = body['currentWeight']
+
+        try:
+            traineeWeight = WeightTrackerHistory(traineeWeight=cw, traineeID_id=traineeID)
+            traineeWeight.save()
+            return JsonResponse({'result': 'weight added '}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
