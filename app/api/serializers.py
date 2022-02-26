@@ -90,3 +90,7 @@ class WaterTrackerHistortSerializer(serializers.ModelSerializer):
         model = WaterTrackerHistory
         fields = ['id','dailyAmount' ,'traineeID']
 
+class weightHistorySerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightTrackerHistory
+        fields = ('id','traineeWeight','created_at')

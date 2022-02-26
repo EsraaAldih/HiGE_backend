@@ -3,7 +3,7 @@ from email import utils
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.utils import timezone
 from django.conf import settings
 
@@ -147,12 +147,14 @@ class ReportPost(models.Model):
 
 
 # comment model
-
+class ContentValidator(RegexValidator):
+    regex = r'^[a-zA-Z\s]+$'
+    message = 'Invalid Comment.'
 
 class Comment(models.Model):
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(validators=[ContentValidator()])
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
@@ -191,5 +193,4 @@ class WaterTrackerHistory(models.Model):
     traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
