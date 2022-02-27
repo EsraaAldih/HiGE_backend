@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate
 from rest_auth.serializers import UserDetailsSerializer as DefaultUserDetailsSerializer
 from rest_auth.models import TokenModel
 from api.models import weightTracker,WaterTracker
-
+from allauth.account.models import EmailAddress
 class ChoicesField(serializers.ChoiceField):
   
    def to_representation(self, obj):
@@ -98,7 +98,7 @@ class TraineeCustomRegistrationSerializer(RegisterSerializer):
     def save(self, request):
         user = super().save(request)
         user.is_staff =False
-        # user.is_active=True
+        user.is_active=True
         trainee = Trainee(
                 trainee=user, 
                 # initialWeight=self.cleaned_data.get('initialWeight'), 
@@ -117,7 +117,8 @@ class TraineeCustomRegistrationSerializer(RegisterSerializer):
         )
         traineeWater=WaterTracker(
             traineeID_id =trainee.id,
-            currentAmount =0
+            currentAmount =0,
+            
         )
         traineeWeight.save()
         traineeWater.save()
@@ -133,14 +134,22 @@ class LoginUserSerializer(serializers.Serializer):
         email = attrs.get('email')
         password = attrs.get('password')
         print('email ',email," --- password",password)
+   
+        
         if email and password:
             if NewUser.objects.filter(email=email).exists():
-                user = authenticate(request=self.context.get('request'),
-                                    email=email, password=password)
-
+                   if (EmailAddress.objects.get(email=email)).verified==False :
+                    print("email is not verified ")
+                    msg = {'detail': 'This email is not verified',
+                        'register': True}
+                    raise serializers.ValidationError(msg)
+                   else :
+                        user = authenticate(request=self.context.get('request'),
+                                            email=email, password=password)
+             
             else:
                 print("not registered user ")
-                msg = {'detail': 'This email is not registered.',
+                msg = {'detail': 'This email is not registered',
                        'register': False}
                 raise serializers.ValidationError(msg)
 
