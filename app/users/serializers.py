@@ -177,8 +177,4 @@ class CustomTokenSerializer(serializers.ModelSerializer):
         model = TokenModel
         fields = ('key', 'user', )
 
-##################################################################
-#password Serilizer 
-
-
 

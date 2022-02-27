@@ -1,6 +1,5 @@
 import json
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.shortcuts import render
 from .serializers import *
 from rest_auth.registration.views import RegisterView
 from rest_framework.response import Response
@@ -112,15 +111,15 @@ class editTrainerProfile(APIView):
             return JsonResponse({'error':"something went wrong"}, status=200)    
         
         
-class CustomConfirmEmailView(ConfirmEmailView):
-    print('come here ')
-    def get(self, *args, **kwargs):
-        try:
-            self.object = self.get_object()
-        except Http404:
-            self.object = None
-        user = NewUser.objects.get(email=self.object.email_address.email)
-        redirect_url = reverse('user', args=(user.id,))
-        return redirect(redirect_url)
+# class CustomConfirmEmailView(ConfirmEmailView):
+#     print('come here ')
+#     def get(self, *args, **kwargs):
+#         try:
+#             self.object = self.get_object()
+#         except Http404:
+#             self.object = None
+#         user = NewUser.objects.get(email=self.object.email_address.email)
+#         redirect_url = reverse('user', args=(user.id,))
+#         return redirect(redirect_url)
     
     

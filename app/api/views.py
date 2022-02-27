@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 
 
-
 from .models import *
 from .serializers import *
 
@@ -88,48 +87,77 @@ class ReportCommentViewSet(viewsets.ModelViewSet):
     serializer_class = ReportCommentSerializer
 
 
-
 class WorkoutExViewSet(viewsets.ModelViewSet):
     queryset = WorkoutExcercise.objects.all().order_by('id')
     serializer_class = WorkoutExSerializer
-    
-    
+
+
 class TraineeCurrentWeight(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request, *args, **kwargs):
         owner = Trainee.objects.get(trainee_id=self.request.user.id)
-       
+
         try:
-            currentWeight=(weightTracker.objects.get(traineeID_id=owner.id)).currentWeight
-            currentCounter = (weightTracker.objects.get(traineeID_id=owner.id)).numOfLogin
-            return JsonResponse({'result': currentWeight , 
-                                 'counter':currentCounter}, status=200)
+            traineeData = (weightTracker.objects.get(traineeID_id=owner.id))
+            currentID = traineeData.traineeID_id
+            currentWeight = traineeData.currentWeight
+            currentCounter = traineeData.numOfLogin
+            return JsonResponse({'id': currentID,
+                                 'weight': currentWeight,
+                                 'counter': currentCounter}, status=200)
         except:
             return JsonResponse({'result': "something went wrong"}, status=200)
-        
+
     def put(self, request, *args, **kwargs):
         owner = Trainee.objects.get(trainee_id=self.request.user.id)
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         cw = body['currentWeight']
         currentCounter = body['currentCounter']
-        print("currentWeight: ",cw)
-      
+
         try:
             traineeWeight = weightTracker.objects.get(traineeID_id=owner.id)
-            traineeWeight.currentWeight=cw
-            traineeWeight.numOfLogin=currentCounter
+            traineeWeight.currentWeight = cw
+            traineeWeight.numOfLogin = currentCounter
             traineeWeight.save()
             return JsonResponse({'result': 'currentWeight is updated correctly'}, status=200)
         except:
             return JsonResponse({'result': "something went wrong"}, status=200)
 
+
+class TraineeWeightHistory(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        try:
+            traineeHistory = list(WeightTrackerHistory.objects.filter(traineeID_id=owner.id).order_by('-created_at')[:4][::-1])
+            tmpJson = serializers.serialize("json",traineeHistory)
+            tmpObj = json.loads(tmpJson)
+            return JsonResponse({'result': tmpObj}, status=200)
+        except:
+            return JsonResponse({'result': "something went wrong"}, status=200)
+
+
+    def post(self, request, *args, **kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        traineeID = body['id']
+        cw = body['currentWeight']   
+        
+        try:
+            traineeWeight = WeightTrackerHistory(traineeWeight=cw,traineeID_id=traineeID)
+            traineeWeight.save()
+            return  JsonResponse({'result':'weight added '}, status=200)
+        except:
+            return  JsonResponse({'result':"something went wrong"}, status=200)
+    
+    
+
 @api_view()
 def null_view(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 class deleteFavYogaPlan (APIView):
@@ -161,7 +189,7 @@ class deleteFavWorkoutPlan (APIView):
         except:
             return JsonResponse({'result': "something went wrong"}, status=200)
 
-#get trainee yoga plan
+# get trainee yoga plan
 class getTraineeFavYogaPlan (APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
@@ -176,7 +204,7 @@ class getTraineeFavYogaPlan (APIView):
             myYogaPlan={}
             return  JsonResponse({'result':"yoga isn't chosen yet"}, status=200)
         
-#get trainee workout plan
+# get trainee workout plan
 class getTraineeFavWorkoutPlan (APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
@@ -289,9 +317,6 @@ class WaterViewSet(APIView):
         except:
             return JsonResponse({'result': "something went wrong"}, status=200)
     
-            return JsonResponse({'errors':"this plan doesn't exist"}, status=200)
-
-
 
 class getTrainerPosts (APIView):
     permission_classes = [IsAuthenticated]
@@ -372,7 +397,6 @@ class addPostComment (APIView):
         except:
             return  JsonResponse({'result':"this post has no comments"}, status=200)
         
-
         
 class WaterHistoryViewSet(APIView):
     permission_classes = [IsAuthenticated]

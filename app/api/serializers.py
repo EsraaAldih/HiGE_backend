@@ -4,12 +4,10 @@ from rest_framework import serializers
 from .models import *
 
 
-
-
 class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = YogaExercise
-        fields = ('id', 'name', 'details', 'duration','image')
+        fields = ('id', 'name', 'details', 'duration', 'image')
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,11 +23,11 @@ class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WorkoutPlanSerializer(serializers.HyperlinkedModelSerializer):
-    # exercise = serializers.SlugRelatedField(
-    #     many=True,
-    #     slug_field='name',
-    #     queryset=WorkoutExcercise.objects.all()
-    #  )
+    exercise = serializers.SlugRelatedField(
+        many=True,
+        slug_field='name',
+        queryset=WorkoutExcercise.objects.all()
+     )
     class Meta:
         model = WorkoutPlan
         fields = ('id','name','description','numberOfEexercises','exercise','created_at', 'image','totalTimeOfExercises')
@@ -96,4 +94,3 @@ class weightHistorySerialzer(serializers.ModelSerializer):
     class Meta:
         model = WeightTrackerHistory
         fields = ('id','traineeWeight','created_at')
-
