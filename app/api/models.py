@@ -1,9 +1,10 @@
 import datetime
 from email import utils
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator,RegexValidator
 from django.utils import timezone
 from django.conf import settings
 
@@ -138,9 +139,10 @@ class Trainee(models.Model):
 class ReportPost(models.Model):
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    text = models.TextField()
+    num_of_reports=models.IntegerField(default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
+    num_of_reports=models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.createdAt} - {self.owner}"
@@ -148,20 +150,24 @@ class ReportPost(models.Model):
 
 # comment model
 
+class ContentValidator(RegexValidator):
+    regex = r'^[a-zA-Z\s]+$'
+    message = 'Invalid Comment.'
 
 class Comment(models.Model):
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    content = models.TextField()
+    content =  models.TextField(validators=[ContentValidator()])
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
 
 # report comment model
 class ReportComment(models.Model):
-    content = models.TextField()
+    num_of_reports=models.IntegerField(default=0)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
+    num_of_reports=models.IntegerField(default=0)
 
 
 class weightTracker(models.Model):
@@ -181,3 +187,13 @@ class WaterTracker(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class WeightTrackerHistory(models.Model):
+    traineeID = models.ForeignKey(Trainee, on_delete=models.CASCADE)
+    traineeWeight =  models.FloatField(default=0)
+    created_at = models.DateField(auto_now_add=True)
+
+class WaterTrackerHistory(models.Model):
+    dailyAmount = models.FloatField(default=0)
+    traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)

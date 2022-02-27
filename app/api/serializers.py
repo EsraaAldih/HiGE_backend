@@ -77,8 +77,23 @@ class weightSerialzer(serializers.ModelSerializer):
         model = weightTracker
         fields = ('id','currentWeight','numOfLogin')
 
+class weightHistorySerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightTrackerHistory
+        fields = ('id','traineeWeight','created_at')
+        
 class WaterTrackerSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaterTracker
         fields = ['id','currentAmount' ,'traineeID']
+        
+class WaterTrackerHistortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WaterTrackerHistory
+        fields = ['id','dailyAmount' ,'traineeID', 'created_at']
+
+class weightHistorySerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightTrackerHistory
+        fields = ('id','traineeWeight','created_at')
 

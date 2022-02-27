@@ -371,3 +371,44 @@ class addPostComment (APIView):
             return  JsonResponse({'result':'comment added '}, status=200)
         except:
             return  JsonResponse({'result':"this post has no comments"}, status=200)
+        
+
+        
+class WaterHistoryViewSet(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        trainee=Trainee.objects.get(trainee_id=self.request.user.id)
+        traineeID= trainee.id
+        dailyAmount = body['amount'] 
+        print(dailyAmount,traineeID) 
+        try:
+            traineeAmount = WaterTrackerHistory(dailyAmount=dailyAmount,traineeID_id=traineeID)
+            traineeAmount.save()
+            return JsonResponse({'result':'daily Amount added '}, status=200)
+        except:
+            return JsonResponse({'result':"something went wrong"}, status=400)
+        
+    def get(self, request, *args, **kwargs):
+        owner = Trainee.objects.get(trainee_id=self.request.user.id)
+        try:
+            data=(WaterTrackerHistory.objects.filter(traineeID_id=owner.id)).order_by('-created_at')[:7][::-1]
+            serializer = WaterTrackerHistortSerializer(data, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK) 
+        except WaterTrackerHistory.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)  
+          
+class getTrainerClients (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainer.objects.get(trainer_id=self.request.user.id)
+        print(owner.id)
+        try:
+            clients=list(Trainee.objects.filter(trainerID=owner.id))
+            tmpJson = serializers.serialize("json",clients)
+            tmpObj = json.loads(tmpJson)
+            return  JsonResponse({'result':tmpObj}, status=200)
+        except:
+            return  JsonResponse({'result':"you don't have any trainees"}, status=200)
