@@ -88,7 +88,7 @@ class WaterTrackerSerializer(serializers.ModelSerializer):
 class WaterTrackerHistortSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaterTrackerHistory
-        fields = ['id','dailyAmount' ,'traineeID']
+        fields = ['id','dailyAmount' ,'traineeID', 'created_at']
 
 class weightHistorySerialzer(serializers.ModelSerializer):
     class Meta:
