@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'api'
 
 ]
-SITE_ID = 1
+SITE_ID = 2
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,7 +108,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'virgin',
+        'NAME': 'virgin2',
         'USER': 'djangos',
         'PASSWORD': 'django',
         'HOST': 'localhost',

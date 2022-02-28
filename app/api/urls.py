@@ -33,6 +33,8 @@ urlpatterns = [
     path('TraineeCurrentWeight/',TraineeCurrentWeight.as_view()),
     path('TraineeWeightHistory/',TraineeWeightHistory.as_view()),
     path('dailyWater/', WaterHistoryViewSet.as_view()),
+    path('traineeInfo/<int:id>', getTraineeDetailsForTrainerViewSet.as_view()),
+    path('getTrainerClients/', getTrainerClients.as_view()),
 
     
 ]

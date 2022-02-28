@@ -25,8 +25,8 @@ class Trainer(models.Model):
     address = models.TextField()
     image = models.ImageField(upload_to='profile/', default='None/no-img.jpg')
 
-    def __str__(self):
-        return self.trainer.username
+    # def __str__(self):
+    #     return self.trainer.username
 
 
 class YogaExercise(models.Model):
@@ -113,9 +113,7 @@ class WorkoutPlan(models.Model):
         for i in self.exercise.values():
             sum += 1
         return sum
-    def __str__(self):
-        return self.name + " --- "+self.description+"---"+self.owner.trainer.username
-    
+
 class Trainee(models.Model):
     trainee = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
@@ -131,8 +129,8 @@ class Trainee(models.Model):
    # def __str__(self):
     #    return self.trainee.name
 
-    def __str__(self):
-        return self.trainee.username
+    # def __str__(self):
+    #     return self.trainee.username
 
 
 class ReportPost(models.Model):
