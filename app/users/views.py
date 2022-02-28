@@ -62,5 +62,5 @@ class TraineeDetail(APIView):
         #     print(user)
         # except:
         #     print("not a trainee")
-        return Response ({'trainer':tmpObj})
+        return Response ({'trainer':tmpObj, 'username': request.user.username})
 

@@ -131,8 +131,8 @@ class Trainee(models.Model):
    # def __str__(self):
     #    return self.trainee.name
 
-    def __str__(self):
-        return self.trainee.username
+    #def __str__(self):
+     #   return self.trainee.username
 
 
 class ReportPost(models.Model):
