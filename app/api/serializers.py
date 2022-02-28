@@ -13,8 +13,8 @@ class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'text', 'createdAt',)
-
+        fields = ('id', 'text','createdAt',)
+        
 
 class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
