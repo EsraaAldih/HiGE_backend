@@ -428,11 +428,15 @@ class getTrainerClients (APIView):
     def get(self,request,*args,**kwargs):
         print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
         owner=Trainer.objects.get(trainer_id=self.request.user.id)
-        print(owner.id)
         try:
             clients=list(Trainee.objects.filter(trainerID=owner.id))
-            tmpJson = serializers.serialize("json",clients)
+            u = []
+            for c in clients:
+                usernames=list(NewUser.objects.filter(pk=c.trainee.id))
+                u.extend(usernames)
+            tmpJson = serializers.serialize("json",u)
             tmpObj = json.loads(tmpJson)
+
             return  JsonResponse({'result':tmpObj}, status=200)
         except:
             return  JsonResponse({'result':"you don't have any trainees"}, status=200)
