@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'api'
 
 ]
-#site id in db
+
 SITE_ID = 2
 
 MIDDLEWARE = [
