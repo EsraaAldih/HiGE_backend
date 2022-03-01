@@ -424,8 +424,28 @@ class WaterHistoryViewSet(APIView):
             serializer = WaterTrackerHistortSerializer(data, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK) 
         except WaterTrackerHistory.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)  
-          
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+class getTrainerClients (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
+        owner=Trainer.objects.get(trainer_id=self.request.user.id)
+        try:
+            clients=list(Trainee.objects.filter(trainerID=owner.id))
+            u = []
+            for c in clients:
+                usernames=list(NewUser.objects.filter(pk=c.trainee.id))
+                u.extend(usernames)
+            tmpJson = serializers.serialize("json",u)
+            tmpObj = json.loads(tmpJson)
+
+            return  JsonResponse({'result':tmpObj}, status=200)
+        except:
+            return  JsonResponse({'result':"you don't have any trainees"}, status=400)   
+        
+             
+        #######################  Esraa ###########################
 class getTraineeDetailsForTrainerViewSet(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, id=None):
@@ -477,25 +497,7 @@ class getTraineeDetailsForTrainerViewSet(APIView):
         except:
             return  JsonResponse({'result':"workout and yoga aren't chosen yet"}, status=400)
           
-class getTrainerClients (APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self,request,*args,**kwargs):
-        print("test ",self.request.user.is_authenticated,self.request.user.is_staff)
-        owner=Trainer.objects.get(trainer_id=self.request.user.id)
-        try:
-            clients=list(Trainee.objects.filter(trainerID=owner.id))
-            u = []
-            for c in clients:
-                usernames=list(NewUser.objects.filter(pk=c.trainee.id))
-                u.extend(usernames)
-            tmpJson = serializers.serialize("json",u)
-            tmpObj = json.loads(tmpJson)
 
-            return  JsonResponse({'result':tmpObj}, status=200)
-        except:
-            return  JsonResponse({'result':"you don't have any trainees"}, status=400)   
-        
-   
    
 class TraineeInfoData(APIView):
     permission_classes = [IsAuthenticated]
@@ -550,6 +552,7 @@ class getTrainersFroTrainee (APIView):
                 return JsonResponse({'errors':"trainer doesn't exist"}, status=400)
 
         
-        
+        #######################  Esraa ###########################
+      
         
 # getTrainers

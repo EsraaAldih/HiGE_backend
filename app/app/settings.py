@@ -7,8 +7,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from fractions import Fraction
 from pathlib import Path
 import os
+from pickle import TRUE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,7 +80,7 @@ REST_FRAMEWORK = {
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'users.serializers.LoginUserSerializer',
-    'TOKEN_SERIALIZER': 'users.serializers.CustomTokenSerializer'
+    'TOKEN_SERIALIZER': 'users.serializers.CustomTokenSerializer',
 }
 
 ROOT_URLCONF = 'app.urls'
@@ -86,7 +88,9 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+        os.path.join(BASE_DIR, 'assets'),
+        os.path.join(BASE_DIR, 'templates', 'allauth')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -162,20 +166,37 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
+#custom user
 AUTH_USER_MODEL = 'users.NewUser'
-
+#make email default for login
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
+#sending mail settings
 
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'djangot201@gmail.com'
-EMAIL_HOST_PASSWORD = 'django12_34'
-EMAIL_PORT = 587
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'djangot201@gmail.com'
-EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+# password from sendgrid
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#The URL to redirect to after a successful e-mail confirmation, in case of an authenticated user. Set to None to use settings.LOGIN_REDIRECT_URL
+EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:3000/login'
+#Determines whether or not an e-mail address is automatically confirmed by a mere GET request.
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+#The URL to redirect to after a successful e-mail confirmation, in case no user is logged in.
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:3000/login'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/verified'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=7
+#brute force attack 
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
+#block her for a day in seconds
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT=86400 
+
+#confirmPasswordRedirect 
+LOGOUT_ON_PASSWORD_CHANGE = False
