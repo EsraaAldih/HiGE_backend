@@ -25,9 +25,6 @@ from rest_framework.permissions import *
 from rest_framework.authentication import *
 from django.core import serializers
 from users.models import NewUser
-
-from django.db.models import Count
-
 class YogaExerciseViewSet(viewsets.ModelViewSet):
     queryset = YogaExercise.objects.all().order_by('id')
     serializer_class = YogaExerciseSerializer
