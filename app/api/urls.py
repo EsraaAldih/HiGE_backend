@@ -38,6 +38,7 @@ urlpatterns = [
     path('traineeInfoData/<int:id>', TraineeInfoData.as_view()),
     path('getTrainers/', getTrainersFroTrainee.as_view()),
 
+
 ]
     
     

@@ -554,5 +554,4 @@ class getTrainersFroTrainee (APIView):
         
         #######################  Esraa ###########################
       
-        
-# getTrainers
+

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'api'
 
 ]
+
 SITE_ID = 2
 
 MIDDLEWARE = [
@@ -112,7 +113,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'virgin',
+        'NAME': 'cups',
         'USER': 'djangos',
         'PASSWORD': 'django',
         'HOST': 'localhost',

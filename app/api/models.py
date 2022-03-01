@@ -134,6 +134,7 @@ class Trainee(models.Model):
     #     return self.trainee.username
 
 
+
 class ReportPost(models.Model):
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
