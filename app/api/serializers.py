@@ -13,8 +13,8 @@ class YogaExerciseSerializer(serializers.HyperlinkedModelSerializer):
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'text', 'createdAt',)
-
+        fields = ('id', 'text','createdAt',)
+        
 
 class ReportPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -88,7 +88,7 @@ class WaterTrackerSerializer(serializers.ModelSerializer):
 class WaterTrackerHistortSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaterTrackerHistory
-        fields = ['id','dailyAmount' ,'traineeID']
+        fields = ['id','dailyAmount' ,'traineeID', 'created_at']
 
 class weightHistorySerialzer(serializers.ModelSerializer):
     class Meta:
