@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
 # django User
+from users.serializers import DefaultUserDetailsSerializer
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
@@ -25,6 +26,7 @@ from rest_framework.authentication import *
 from django.core import serializers
 from users.models import NewUser
 
+from django.db.models import Count
 
 class YogaExerciseViewSet(viewsets.ModelViewSet):
     queryset = YogaExercise.objects.all().order_by('id')
@@ -431,37 +433,52 @@ class getTraineeDetailsForTrainerViewSet(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, id=None):
         trainee=Trainee.objects.get(trainee_id=id)
-        print("owneeeeeeeeeeeeeeeeeeeeeeeeeeeeer",trainee.id)
+        print("owneeeeeeeeeeeeeeeeeeeeeeeeeeeeer",trainee.trainee_id)
        
         try:
             traineeWorkoutPlan=WorkoutPlan.objects.filter(id=trainee.workoutPlan_id).first()
+            print("wwwwwwwwwwwwwwwwwww",traineeWorkoutPlan)    
             traineeYogaPlan=YogaPlan.objects.filter(id=trainee.yogaPlan_id).first()
-            username=NewUser.objects.filter(pk=trainee.id)
-            tmpJsonWorkout = serializers.serialize("json",{traineeWorkoutPlan})
-            tmpJsonYoga = serializers.serialize("json",{traineeYogaPlan})
-            tmpJsonUser = serializers.serialize("json",username)
-            
-            tmpObjWorkout = json.loads(tmpJsonWorkout)
-            tmpObjYoga = json.loads(tmpJsonYoga)
-            tmpObjUser = json.loads(tmpJsonUser)
-            print("uuuuuuuuuuuuuuuuuuuuuuuuuhhh",tmpObjUser[0]['fields']['email'])
-            email=tmpObjUser[0]['fields']['email']
-            username=tmpObjUser[0]['fields']['username']
-            data=(WaterTrackerHistory.objects.filter(traineeID_id=trainee.id)).order_by('-id')[:7][::-1]
+            print("yyyyyyyyyyyyyyyyyyy",traineeYogaPlan)    
+           
+            if(traineeWorkoutPlan):
+                 tmpJsonWorkout = serializers.serialize("json",{traineeWorkoutPlan})
+                 tmpObjWorkout = json.loads(tmpJsonWorkout)
+            else:
+                tmpObjWorkout="the trainee does not choies a plan yet"  
+            if(traineeYogaPlan):
+                 tmpJsonYoga = serializers.serialize("json",{traineeYogaPlan})
+                 tmpObjYoga = json.loads(tmpJsonYoga)
+            else:
+                tmpObjYoga="the trainee does not choies a plan yet"  
+                   
+            data=(WaterTrackerHistory.objects.filter(traineeID_id=trainee.id)).order_by('-id')
             serializer = WaterTrackerHistortSerializer(data, many=True)
-            traineeHistory = list(WeightTrackerHistory.objects.filter(traineeID_id=trainee.id).order_by('-id')[:4][::-1])
+            if(len(data)>=7):
+                data=data[:7][::-1]
+                dataWater=serializer.data
+            else:
+                dataWater="The Water History report hasn't prepared yet....."  
+                  
+            traineeHistory = list(WeightTrackerHistory.objects.filter(traineeID_id=trainee.id).order_by('-id'))
             tmpJsonweight = serializers.serialize("json",traineeHistory)
             tmpObjweight = json.loads(tmpJsonweight)
+            print("yakhrapaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay",len(tmpObjweight))
             
-            print("jjjjjjjjjjjjjjjjjjjj",trainee.medicalHistory)
-            return JsonResponse({"water":serializer.data,"workout":tmpObjWorkout,"yoga":tmpObjYoga,"weight":tmpObjweight,
-                                 "userInfo":{"email":email,"username":username,"medicalHistory":trainee.medicalHistory,"age":trainee.age}}, status=status.HTTP_200_OK)
+            if(len(traineeHistory) >= 4):
+                traineeHistory = traineeHistory[:4][::-1]
+                tmpJsonweight = serializers.serialize("json",traineeHistory)
+                tmpObjweight = json.loads(tmpJsonweight)
+            else:  
+                 tmpObjweight= "The Weight History report hasn't prepared yet..... " 
+            
+
+                
+                 
+            return JsonResponse({"water":dataWater,"workout":tmpObjWorkout,"yoga":tmpObjYoga,"weight":tmpObjweight}, status=status.HTTP_200_OK)
 
         except:
             return  JsonResponse({'result':"workout and yoga aren't chosen yet"}, status=400)
-   
-   
-   
           
 class getTrainerClients (APIView):
     permission_classes = [IsAuthenticated]
@@ -479,4 +496,63 @@ class getTrainerClients (APIView):
 
             return  JsonResponse({'result':tmpObj}, status=200)
         except:
-            return  JsonResponse({'result':"you don't have any trainees"}, status=200)   
+            return  JsonResponse({'result':"you don't have any trainees"}, status=400)   
+        
+   
+   
+class TraineeInfoData(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id=None): 
+        trainee=Trainee.objects.get(trainee_id=id)
+        try:
+            username=NewUser.objects.filter(pk=trainee.trainee_id)  
+            tmpJsonUser = serializers.serialize("json",username)         
+            tmpObjUser = json.loads(tmpJsonUser)
+            print("uuuuuuuuuuuuuuuuuuuuuuuuuhhh",tmpObjUser[0]['fields']['email'])
+            email=tmpObjUser[0]['fields']['email']
+            username=tmpObjUser[0]['fields']['username']
+            return JsonResponse({"userInfo":{"email":email,"username":username,"medicalHistory":trainee.medicalHistory,"age":trainee.age}}, status=status.HTTP_200_OK)
+            
+        except:
+            return  JsonResponse({'result':"something went Wrong"}, status=400)
+   
+
+class getTrainersFroTrainee (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        trainee=Trainee.objects.get(trainee_id=self.request.user.id)
+        try:
+            # clients=list(Trainee.objects.filter(trainerID=owner.id))
+            trainers=list(Trainer.objects.all())
+            print("ddddd",trainers)
+            available_tainers = []
+            for trainer in trainers:
+                data=(NewUser.objects.filter(id=trainer.trainer_id)).order_by('-id')
+                serializer = DefaultUserDetailsSerializer(data, many=True)
+                available_tainers.extend(serializer.data)
+            print("uuuuuuuuuuugggggguuuuu",available_tainers)
+
+            return  Response({"trainers":available_tainers}, status=200)
+        except:
+            return  JsonResponse({'result':"you don't have any trainees"}, status=400) 
+          
+    def put(self,request,*args,**kwargs):
+            trainee=Trainee.objects.filter(trainee_id=self.request.user.id).first()
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            trainerId = body['id']
+            print("trainer Id ",trainerId)
+            try:
+                trainer=Trainer.objects.filter(trainer_id=trainerId).first()
+                trainee.trainerID_id =trainer.id
+                print("trainer Id ",trainer.id)
+                
+                trainee.save()
+                return JsonResponse({'result':"trainer is added"}, status=200)
+            except:
+                return JsonResponse({'errors':"trainer doesn't exist"}, status=400)
+
+        
+        
+        
+# getTrainers
