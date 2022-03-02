@@ -1,5 +1,6 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from .serializers import *
 from rest_auth.registration.views import RegisterView
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ from rest_framework.permissions import AllowAny
 from allauth.account.views import ConfirmEmailView
 from django.http import HttpResponseRedirect, JsonResponse
 from allauth.account.models import EmailAddress
-
+from django.conf import settings
 # Create your views here.
 class TrainerRegistrationView(RegisterView):
     serializer_class = TrainerCustomRegistrationSerializer
@@ -76,7 +77,7 @@ class TraineeDetail(APIView):
 
 # for emails
 class joinUs(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def post(self,request,*args,**kwargs):
         print("test",request.user)
         body_unicode = request.body.decode('utf-8')
@@ -84,12 +85,26 @@ class joinUs(APIView):
         userName = body['name']
         email = body['email']
         content = body['content']
+        text="user name  "+userName+" sender email "+email+" --- "+content
         send_mail(
-
+         'Join Us',text,settings.DEFAULT_FROM_EMAIL,[settings.DEFAULT_FROM_EMAIL]
         )
 
-        return Response ({'trainee':tmpObj})
+        return Response ("email is sent successfully",status=200)
 
+class reportIssue(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self,request,*args,**kwargs):
+        print("test",request.user)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        content= body['content']
+        s_email = self.request.user.email
+        text="sender email "+s_email+" --- "+content
+        send_mail(
+         'reportIssue',text,settings.DEFAULT_FROM_EMAIL,[settings.DEFAULT_FROM_EMAIL]
+        )
+        return Response ("email is sent successfully",status=200)
 
 class editTrainerProfile(APIView):
     permission_classes = [IsAuthenticated]
@@ -111,15 +126,17 @@ class editTrainerProfile(APIView):
             return JsonResponse({'error':"something went wrong"}, status=200)    
         
         
-# class CustomConfirmEmailView(ConfirmEmailView):
-#     print('come here ')
-#     def get(self, *args, **kwargs):
-#         try:
-#             self.object = self.get_object()
-#         except Http404:
-#             self.object = None
-#         user = NewUser.objects.get(email=self.object.email_address.email)
-#         redirect_url = reverse('user', args=(user.id,))
-#         return redirect(redirect_url)
+class CustomConfirmEmailView(ConfirmEmailView):
+    print('come here ')
+    def get(self, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            self.object = None
+        user = NewUser.objects.get(email=self.object.email_address.email)
+        redirect_url = reverse('user', args=(user.id,))
+        return redirect(redirect_url)
+    
+# class getTraineeDetailsForTrainerViewSet(APIView):
     
     

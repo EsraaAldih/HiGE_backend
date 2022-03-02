@@ -34,7 +34,7 @@ class ChoicesField(serializers.ChoiceField):
 # override registerclassmethods
 class TrainerCustomRegistrationSerializer(RegisterSerializer):
 
-    age=serializers.IntegerField()
+    dateOfBirth=serializers.DateField()
     gender = ChoicesField(choices=Trainer.GENDER_CHOICES)
     trainer = serializers.PrimaryKeyRelatedField(read_only=True,) #by default allow_null = False
     phoneNumber = serializers.CharField(max_length=11,required=True)
@@ -46,7 +46,7 @@ class TrainerCustomRegistrationSerializer(RegisterSerializer):
             data = super().get_cleaned_data()
             extra_data = {
                 'gender':self.validated_data.get('gender', ''),
-                'age':self.validated_data.get('age', ''),
+                'dateOfBirth':self.validated_data.get('dateOfBirth', ''),
                 'phoneNumber' : self.validated_data.get('phoneNumber', ''),
                 'address' : self.validated_data.get('address', ''),
                 'image': self.validated_data.get('image', ''),
@@ -65,13 +65,13 @@ class TrainerCustomRegistrationSerializer(RegisterSerializer):
                 phoneNumber=self.cleaned_data.get('phoneNumber'), 
                 address=self.cleaned_data.get('address'),
                 image=self.cleaned_data.get('image'),
-                age=self.cleaned_data.get('age'))
+                dateOfBirth=self.cleaned_data.get('dateOfBirth'))
         trainer.save()
         return user
 
 class TraineeCustomRegistrationSerializer(RegisterSerializer):
 
-    age=serializers.IntegerField(required=True)
+    dateOfBirth=serializers.DateField(required=True)
     trainee = serializers.PrimaryKeyRelatedField(read_only=True,) #by default allow_null = False
     # initialWeight = serializers.CharField(max_length=5)
     currentWeight = serializers.CharField(max_length=5)
@@ -84,7 +84,7 @@ class TraineeCustomRegistrationSerializer(RegisterSerializer):
     def get_cleaned_data(self):
             data = super().get_cleaned_data()
             extra_data = {
-                'age':self.validated_data.get('age', ''),
+                'dateOfBirth':self.validated_data.get('dateOfBirth', ''),
                 # 'initialWeight' : self.validated_data.get('initialWeight', ''),
                 'currentWeight' : self.validated_data.get('currentWeight', ''),
                 'height': self.validated_data.get('height', ''),
@@ -104,7 +104,7 @@ class TraineeCustomRegistrationSerializer(RegisterSerializer):
                 # initialWeight=self.cleaned_data.get('initialWeight'), 
                 currentWeight=self.cleaned_data.get('currentWeight'),
                 height=self.cleaned_data.get('height'),
-                age=self.cleaned_data.get('age'),
+                dateOfBirth=self.cleaned_data.get('dateOfBirth'),
                 # status=self.cleaned_data['status'],
                 medicalHistory=self.cleaned_data['medicalHistory'],
                 )
