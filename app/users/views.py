@@ -61,19 +61,21 @@ class TrainerDetail(APIView):
     def get(self,request,*args,**kwargs):
         print("test",request.user)
         trainer=Trainer.objects.filter(trainer_id=request.user.id).first()
+        print("sffffffffffffff",trainer.address,"--  ",trainer.age)
         tmpJson = serializers.serialize("json",{trainer})
         tmpObj = json.loads(tmpJson)
-        return Response ({'trainer':tmpObj})
+        print(tmpObj)
+        return Response ({'trainer':tmpObj,'age':trainer.age})
 
 class TraineeDetail(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         print("test",request.user)
         trainee=Trainee.objects.filter(trainee_id=request.user.id).first()
-        
+        print("sffffffffffffff","--  ",trainee.age)
         tmpJson = serializers.serialize("json",{trainee})
         tmpObj = json.loads(tmpJson)
-        return Response ({'trainee':tmpObj,'username':request.user.username})
+        return Response ({'trainee':tmpObj,'username':request.user.username,'age':trainee.age})
 
 # for emails
 class joinUs(APIView):
@@ -113,11 +115,9 @@ class editTrainerProfile(APIView):
         trainer=Trainer.objects.get(trainer_id=self.request.user.id)
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        age = body['age']
         phoneNumber = body['phoneNumber']
         address = body['address']
         try:
-            trainer.age=age
             trainer.phoneNumber=phoneNumber
             trainer.address=address
             trainer.save()
@@ -138,5 +138,4 @@ class CustomConfirmEmailView(ConfirmEmailView):
         return redirect(redirect_url)
     
 # class getTraineeDetailsForTrainerViewSet(APIView):
-    
     
