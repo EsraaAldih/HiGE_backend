@@ -1,4 +1,4 @@
-import datetime
+from datetime import date
 from email import utils
 from statistics import mode
 from django.db import models
@@ -20,16 +20,19 @@ class Trainer(models.Model):
     )
     trainer = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
-    age = models.IntegerField(default=0)
+    dateOfBirth = models.DateField()
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Female')
     phoneNumber = models.CharField(max_length=11)
     address = models.TextField()
     image = models.ImageField(upload_to='profile/', default='None/no-img.jpg')
 
-    # def __str__(self):
-    #     return self.trainer.username
-
-
+    def __str__(self):
+        return self.trainer.username
+    @property
+    def age(self) :
+        today = date.today()
+        age=today.year -self.dateOfBirth.year 
+        return age
 class YogaExercise(models.Model):
     name = models.CharField(max_length=100, null=False,
                             blank=False, unique=True)
@@ -50,6 +53,16 @@ class Post(models.Model):
     text = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
+
+    @property
+    def date(self):
+        date = self.createdAt.date()
+        return date
+
+    @property
+    def time(self):
+        time = self.createdAt.time().strftime("%H:%M")
+        return time
 
     def __str__(self):
         return f"{self.createdAt} - {self.owner}"
@@ -114,11 +127,13 @@ class WorkoutPlan(models.Model):
         for i in self.exercise.values():
             sum += 1
         return sum
-
+    def __str__(self):
+        return self.name + " --- "+self.description+"---"+self.owner.trainer.username
+    
 class Trainee(models.Model):
     trainee = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
-    age = models.IntegerField(default=0)
+    dateOfBirth = models.DateField()
     currentWeight = models.CharField(max_length=5, null=True, blank=True)
     height = models.CharField(max_length=5)
     medicalHistory = models.BooleanField(default=False)
@@ -126,12 +141,12 @@ class Trainee(models.Model):
     yogaPlan = models.ForeignKey(YogaPlan, on_delete=models.SET_NULL, null=True)
     workoutPlan = models.ForeignKey(WorkoutPlan, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, null=True)
-
-   # def __str__(self):
-    #    return self.trainee.name
-
-    # def __str__(self):
-    #     return self.trainee.username
+    changedPlanStatus = models.BooleanField(default=False)
+    @property
+    def age(self) :
+        today = date.today()
+        age=today.year -self.dateOfBirth.year 
+        return age
 
 
 
@@ -141,7 +156,7 @@ class ReportPost(models.Model):
     num_of_reports=models.IntegerField(default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
-    num_of_reports=models.IntegerField(default=0)
+    
 
     def __str__(self):
         return f"{self.createdAt} - {self.owner}"
@@ -165,7 +180,7 @@ class ReportComment(models.Model):
     num_of_reports=models.IntegerField(default=0)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     owner = models.ForeignKey(Trainee, on_delete=models.CASCADE)
-    num_of_reports=models.IntegerField(default=0)
+  
 
 
 class weightTracker(models.Model):
@@ -185,17 +200,6 @@ class WaterTracker(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
-class WeightTrackerHistory(models.Model):
-    traineeID = models.ForeignKey(Trainee, on_delete=models.CASCADE)
-    traineeWeight =  models.FloatField(default=0)
-    created_at = models.DateField(auto_now_add=True)
-
-class WaterTrackerHistory(models.Model):
-    dailyAmount = models.FloatField(default=0)
-    traineeID = models.ForeignKey(Trainee, on_delete=models.SET_NULL, null=True, blank=True)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
-
 class WeightTrackerHistory(models.Model):
     traineeID = models.ForeignKey(Trainee, on_delete=models.CASCADE)
     traineeWeight =  models.FloatField(default=0)
