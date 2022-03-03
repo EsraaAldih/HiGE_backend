@@ -23,8 +23,8 @@
  - By customizing rest-auth login serializer HiGE uses email instead of username(rest-auth default) for loggin in .
  - HIGE App uses SendGrid (cloud-based SMTP provider) to send emails (verification emails or else).
  - By customizing Django User Model authenticated Users of the sytems are divided into 2 categories 
-     1.  trainee (female):
-        - trainee has the privilidges to 
+     1.  trainee (female)
+         - trainee has the privilidges to 
             - register , required data for registeration (email, username, current weight, age,medical history (boolean field))
             - login ,required data for logging in (email ,password)
             - reset password by provideing email then after checking this email trainee will be redirected to a form to reset her password
