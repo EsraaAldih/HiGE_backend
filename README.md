@@ -16,7 +16,7 @@
 - A registered user as trainee can daily keep track of water amount she drinks by notifying her to drink 1/2 L each 3 hours .Depending on the amount of water she drinks per day she will get a weekly report of her progress.
 - A registered user as trainee can input her own plans in todo list .
 - Registered user as trainee can choose to have a private trainer from our participated trainers to follow up with them in case they need futher personal       guidance.
-- Our App provides Community Section for our registered users to allow trainers to share healthy tips and knowledge aganist healthy lifestyle mistakes.
+- Our App provides Community Section for our registered users to allow trainers to share healthy tips and awarness aganist healthy lifestyle mistakes.
 
  ## Functionalities In Depth
  - HIGE App backend is implemented using Django Framework,Django-rest for building end points ,Django rest-auth for managing users registration and authentication and Postgres as a database.
