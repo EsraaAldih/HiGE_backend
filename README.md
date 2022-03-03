@@ -3,10 +3,10 @@
 ## Table of Contents
 
 1. Description
-2. Functionalities In Depth
-3. Instructions
-4. Running
-5. Important Points
+2. App Architecture
+3. Functionalities In Depth
+4. Instructions
+5. Running
 6. Future Wrok
 ## Description
 - The graduation project for ITI .
