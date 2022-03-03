@@ -60,7 +60,15 @@
 
 - `git clone` (https://github.com/EsraaAldih/HiGE_backend.git)
 - `cd` into your folder and run `python3.10 -m venv venv` to create a virtual environment ,then run `source venv/bin/activate` to activate it
-
+- then install the followings 
+   - `pip install "Django~=3.1.14"`
+   - `pip install pillow`
+   - `pip3 install psycopg2` => if itdoesnt't work ---> `pip3 install psycopg2-binary`
+   - `pip3 install djangorestframework`
+   - `pip3 install markdown`
+   - `pip3 install django-filter`
+   - `pip3 install django-rest-auth[with_social]`
+   
 
 
 
