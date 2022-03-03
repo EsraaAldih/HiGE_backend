@@ -19,15 +19,23 @@
 - Our App provides Community Section for our registered users to allow trainers to share healthy tips and knowledge aganist healthy lifestyle mistakes.
 
  ## Functionalities In Depth
- - HIGE App backend is implemented using Django Framework,Django-rest for building end points and Django rest-auth for managing users registration and authentication.
+ - HIGE App backend is implemented using Django Framework,Django-rest for building end points and Django rest-auth for managing users registration and authentication .
+ - By customizing rest-auth login serializer HiGE uses email instead of username(rest-auth default) for loggin in .
+ - HIGE App uses SendGrid (cloud-based SMTP provider) to send emails (verification emails or else).
  - By customizing Django User Model authenticated Users of the sytems are divided into 2 categories 
      1.  trainee (female):
         - trainee has the privilidges to 
-            - register,required data for registeration (email,username,current weight,age,medical history (boolean field))
-        
+            - register , required data for registeration (email, username, current weight, age,medical history (boolean field))
+            - login ,required data for logging in (email ,password)
+            - reset password by provideing email then after checking this email trainee will be redirected to a form to reset her password
         -
      2.  trainer :
-
+           - if a trainer chooses to join our teams he/she needs to send us an email via join us form ,after checking his/her identity he/she will the
+               have the credentials to login .
+            - trainer has the privilidges to 
+                - dgdgdd
+              
+          
 
 
 
