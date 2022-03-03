@@ -48,7 +48,7 @@
             - view his/her profile data (eamil , username, date of birth ,personal image , address , phone number)
             - edit profile date ( address , phone number)
             - change his/her password
-            - add and reports posts 
+            - add and edit , delete reports posts 
             - add reports comemnts
             - report an issue
             - view his/her clients profile / progress
