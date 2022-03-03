@@ -3,8 +3,8 @@
 ## Table of Contents
 
 1. Description
-2. App Architecture
-3. Functionalities In Depth
+2. Functionalities In Depth
+3. File Structure
 4. Instructions
 5. Running
 6. Future Wrok
