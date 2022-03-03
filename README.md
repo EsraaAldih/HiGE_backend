@@ -56,8 +56,10 @@
             
  - HIGE provides also general guidance for whoever visits the website like showing the nearest gyms,fitness clothing shops (with aid of google maps) ,what to wear while exercising and general healthy tips .
           
+## Instructiosns 
 
-
+- `git clone` (https://github.com/EsraaAldih/HiGE_backend.git)
+- `cd` into your folder and run `python3.10 -m venv venv` to create a virtual environment ,then run `source venv/bin/activate` to activate it
 
 
 
