@@ -29,10 +29,10 @@
             - login ,required data for logging in (email ,password)
             - reset password by provideing email then after checking this email trainee will be redirected to a form to reset her password
         -
-     2.  trainer :
+     2.  trainer 
         - if a trainer chooses to join our teams he/she needs to send us an email via join us form ,after checking his/her identity he/she will the
                have the credentials to login .
-            - trainer has the privilidges to 
+         - trainer has the privilidges to 
                 - dgdgdd
               
           
