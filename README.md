@@ -77,7 +77,7 @@
     1. in terminal run `sudo apt-get install pgagent`
     2. `sudo su - postgres`
     3. `psql`
-    4. `CREATE EXTENSION pgagent;
+    4. `CREATE EXTENSION pgagent;`
     5. `CREATE LANGUAGE plpgsql;`
     6. `ALTER EXTENSION pgagent UPDATE;`
  - finally run `python manage.py runserver` 
