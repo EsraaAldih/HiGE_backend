@@ -73,9 +73,14 @@
     2. `psql databasename < ourdatabase.sql` 
   - visit (https://sendgrid.com/) ,make account , add a single sender and get a sceret key 
   - navigate to where settings.py is and provide your credentials (db username , db name , db username password, )
-    
- 
-
+  - to install postgres pg-agent 
+    1. in terminal run `sudo apt-get install pgagent`
+    2. `sudo su - postgres`
+    3. `psql`
+    4. `CREATE EXTENSION pgagent;
+    5. `CREATE LANGUAGE plpgsql;`
+    6. `ALTER EXTENSION pgagent UPDATE;`
+ - finally run `python manage.py runserver` 
 
 
 
