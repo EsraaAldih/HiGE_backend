@@ -69,8 +69,10 @@
    - `pip3 install django-filter`
    - `pip3 install django-rest-auth[with_social]`
  - to import our database (make sure to create user in postgres and using this user create a database,use this this database in the following command)
-    1. `sudo su - postgres 
+    1. `sudo su - postgres`
     2. `psql databasename < ourdatabase.sql` 
+  - visit (https://sendgrid.com/) ,make account , add a single sender and get a sceret key 
+  - navigate to where settings.py is and provide your credentials (db username , db name , db username password, )
     
  
 
