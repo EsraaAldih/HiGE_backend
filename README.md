@@ -80,7 +80,10 @@
     4. `CREATE EXTENSION pgagent;`
     5. `CREATE LANGUAGE plpgsql;`
     6. `ALTER EXTENSION pgagent UPDATE;`
- - finally run `python manage.py runserver` 
+    
+ ## Running 
+ - navigate to where manage.py file is and run `python manage.py runserver`
+      
 
 
 
