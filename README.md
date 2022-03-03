@@ -43,7 +43,7 @@
                have the credentials to login .
          - trainer has the privilidges to 
             - login , required data for logging in (email , password)
-            - reset password by provideing email then after checking this email trainee will be redirected to a form to reset his/her password\
+            - reset password by provideing email then after checking this email trainee will be redirected to a form to reset his/her password
             - logout
             - view his/her profile data (eamil , username, date of birth ,personal image , address , phone number)
             - edit profile date ( address , phone number)
@@ -54,7 +54,7 @@
             - view his/her clients profile / progress
             - choose for his/her clients suitable workout and yoga plans
             
- - HIGE provides also general guidance for whoever visits the website like showing the nearest gyms ,fitness clothing shops (with aid of google maps) and general healthy tips .
+ - HIGE provides also general guidance for whoever visits the website like showing the nearest gyms,fitness clothing shops (with aid of google maps) ,what to wear while exercising and general healthy tips .
           
 
 
