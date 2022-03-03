@@ -63,12 +63,16 @@
 - then install the followings 
    - `pip install "Django~=3.1.14"`
    - `pip install pillow`
-   - `pip3 install psycopg2` => if itdoesnt't work ---> `pip3 install psycopg2-binary`
+   - `pip3 install psycopg2` => if itdoesnt't work => `pip3 install psycopg2-binary`
    - `pip3 install djangorestframework`
    - `pip3 install markdown`
    - `pip3 install django-filter`
    - `pip3 install django-rest-auth[with_social]`
-   
+ - to import our database (make sure to create user in postgres and using this user create a database,use this this database in the following command)
+    1. `sudo su - postgres 
+    2. `psql databasename < ourdatabase.sql` 
+    
+ 
 
 
 
