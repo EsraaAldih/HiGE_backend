@@ -56,14 +56,16 @@
             
  - HIGE provides also general guidance for whoever visits the website like showing the nearest gyms,fitness clothing shops (with aid of google maps) ,what to wear while exercising and general healthy tips .
 ## File Structure 
-          - venev
+- HIGE is consisting of 2 django apps , the first one USERS holds the authentication customizations ,the second one API holds the rest apis Implementations .
+
+          - vene
           - app 
+               - app 
                - api 
-               - users
+               - users 
                - manage.py
-         
-          
-          
+               - templates
+                   
 ## Instructiosns 
 
 - `git clone` (https://github.com/EsraaAldih/HiGE_backend.git)
