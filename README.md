@@ -19,23 +19,42 @@
 - Our App provides Community Section for our registered users to allow trainers to share healthy tips and knowledge aganist healthy lifestyle mistakes.
 
  ## Functionalities In Depth
- - HIGE App backend is implemented using Django Framework,Django-rest for building end points and Django rest-auth for managing users registration and authentication .
- - By customizing rest-auth login serializer HiGE uses email instead of username(rest-auth default) for loggin in .
+ - HIGE App backend is implemented using Django Framework,Django-rest for building end points ,Django rest-auth for managing users registration and authentication and Postgres as a database.
+ - By customizing rest-auth login serializer HIGE App uses email instead of username (rest-auth default) for loggin in .
  - HIGE App uses SendGrid (cloud-based SMTP provider) to send emails (verification emails or else).
+ - HIGE App uses postgres pg-agent for scheduling certain tasks related to water and weight tracking .
  - By customizing Django User Model authenticated Users of the sytems are divided into 2 categories 
      1.  trainee (female)
          - trainee has the privilidges to 
             - register , required data for registeration (email, username, current weight, age,medical history (boolean field))
             - login , required data for logging in (email , password)
             - reset password by provideing email then after checking this email trainee will be redirected to a form to reset her password
+            - logout
+            - add reports comemnts
+            - report an issue
+            - add a plan in todo list
+            - input her weight weekly
+            - inputs how much water she drinks six times per day
+            - view her weekly weight and water progress report
+            - choose workout and yoga plan in case of not choosing to follow up with private trainer
         -
      2.  trainer 
          - if a trainer chooses to join our teams he/she needs to send us an email via join us form ,after checking his/her identity he/she will the
                have the credentials to login .
          - trainer has the privilidges to 
-             - login , required data for logging in (email , password)
-             - reset password by provideing email then after checking this email trainee will be redirected to a form to reset her password
-              
+            - login , required data for logging in (email , password)
+            - reset password by provideing email then after checking this email trainee will be redirected to a form to reset his/her password\
+            - logout
+            - view his/her profile data (eamil , username, date of birth ,personal image , address , phone number)
+            - edit profile date ( address , phone number)
+            - change his/her password
+            - add and reports posts 
+            - add reports comemnts
+            - report an issue
+            - view his/her clients profile / progress
+            - choose for his/her clients suitable workout and yoga plans
+            
+   - HIGE provides also general guidence for whoever visits the website like showing the nearest gyms ,fitness clothing shops (with aid of google maps) and general healthy tips 
           
 
 
