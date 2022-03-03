@@ -73,7 +73,7 @@
 - then install the followings 
    - `pip install "Django~=3.1.14"`
    - `pip install pillow`
-   - `pip3 install psycopg2` => if itdoesnt't work => `pip3 install psycopg2-binary`
+   - `pip3 install psycopg2` => if it doesnt't work => `pip3 install psycopg2-binary`
    - `pip3 install djangorestframework`
    - `pip3 install markdown`
    - `pip3 install django-filter`
