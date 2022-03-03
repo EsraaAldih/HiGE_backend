@@ -18,7 +18,11 @@
 - Registered user as trainee can choose to have a private trainer from our participated trainers to follow up with them in case they need futher personal       guidance.
 - Our App provides Community Section for our registered users to allow trainers to share healthy tips and knowledge aganist lifestyles mistakes.
 
-
+ ## Functionalities In Depth
+ - HIGE App backend is implemented using Django Framework,Django-rest for building end points and Django rest-auth for managing users registration and authentication.
+ - By customizing Django User Model authenticated Users of the sytems are divided into 2 categories 
+ 1.  trainee (female):
+ 2.  trainer :
 
 
 
