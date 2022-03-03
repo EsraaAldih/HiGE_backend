@@ -22,11 +22,11 @@
  - HIGE App backend is implemented using Django Framework,Django-rest for building end points and Django rest-auth for managing users registration and authentication.
  - By customizing Django User Model authenticated Users of the sytems are divided into 2 categories 
      1.  trainee (female):
-        - trainee has the privilidges to :
-            -register,required data for registeration (email,username,current weight,age,medical history (boolean field))
+        - trainee has the privilidges to 
+            - register,required data for registeration (email,username,current weight,age,medical history (boolean field))
         
         -
-     3.  trainer :
+     2.  trainer :
 
 
 
