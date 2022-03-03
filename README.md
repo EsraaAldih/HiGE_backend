@@ -54,7 +54,7 @@
             - view his/her clients profile / progress
             - choose for his/her clients suitable workout and yoga plans
             
- - HIGE provides also general guidence for whoever visits the website like showing the nearest gyms ,fitness clothing shops (with aid of google maps) and general healthy tips 
+ - HIGE provides also general guidance for whoever visits the website like showing the nearest gyms ,fitness clothing shops (with aid of google maps) and general healthy tips .
           
 
 
