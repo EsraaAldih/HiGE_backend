@@ -93,6 +93,7 @@
     
  ## Running 
  - navigate to where manage.py file is and run `python manage.py runserver`
+ - open (http://127.0.0.1:8000/) in the browser.
       
 
 
