@@ -30,7 +30,7 @@
             - login , required data for logging in (email , password)
             - reset password by providing email then after checking this email trainee will be redirected to a form to reset her password 
             - logout
-            - add comments on trainers posts
+            - add comments on trainers posts /delete comments /edit comments 
             - report comemnts / posts
             - report an issue
             - add a plan in todo list
@@ -49,8 +49,7 @@
             - view his/her profile data (eamil , username, date of birth ,personal image , address , phone number)
             - edit profile date ( address , phone number)
             - change his/her password
-            - add and add , edit , delete s posts 
-            - reports comemnts /posts
+            - add and add , edit , delete s posts
             - report an issue
             - view his/her clients profile / progress
             - choose for his/her clients suitable workout and yoga plans
