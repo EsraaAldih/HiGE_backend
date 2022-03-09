@@ -1,4 +1,7 @@
+from datetime import date
+import email
 import json
+from re import sub
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from .serializers import *
@@ -14,10 +17,16 @@ from rest_framework.permissions import AllowAny
 from allauth.account.views import ConfirmEmailView
 from django.http import HttpResponseRedirect, JsonResponse
 from allauth.account.models import EmailAddress
+from rest_framework.renderers import TemplateHTMLRenderer
 from django.conf import settings
+from .forms import TrainerRegister
+from django.contrib.auth.hashers import make_password
+
 # Create your views here.
 class TrainerRegistrationView(RegisterView):
     serializer_class = TrainerCustomRegistrationSerializer
+    # renderer_classes = [TemplateHTMLRenderer]
+    # template_name = 'users/trainerRegForm.html'
     
 class TraineeRegistrationView(RegisterView):
     serializer_class = TraineeCustomRegistrationSerializer
@@ -27,12 +36,13 @@ class Login(LoginView):
     permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = LoginUserSerializer(data=request.data)
-        print("logied in user",request.user.id)
+        print("logied in user",serializer.is_valid)
         #print('statsus ',EmailAddress.objects.get(user_id=request.user.id).verified )
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         print("my user  ",user)
         login(request, user)
+        print("login works")
         try :
             print("req user id is",request.user.id)
             #print(Trainee.objects.all())
@@ -138,4 +148,57 @@ class CustomConfirmEmailView(ConfirmEmailView):
         return redirect(redirect_url)
     
 # class getTraineeDetailsForTrainerViewSet(APIView):
-    
+###################################################################3
+def test(request):
+    submitted=False
+    if request.method=="GET" :
+        # new form
+        form=TrainerRegister()
+        if 'submitted' in request.GET :
+            # from the 2nd second request
+            submitted=True
+        return render (request,'users/trainerRegForm.html',{'form':form,'submitted':submitted})
+    else :
+        #req is post data already in
+        
+        form=TrainerRegister(request.POST,request.FILES)
+        print(" post request ",submitted)
+        # print("form is ",form)
+        if form.is_valid():
+            print("form is valid ",submitted)
+            #trainer=form.save(commit=False)
+            print("trainer",form)
+            user=NewUser(
+                password=make_password(form.cleaned_data['password1']),
+                # password2=form.cleaned_data['password2'],
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['Email']
+            )
+            user.is_staff = True
+            user.is_active=True
+            try:
+                user.save()
+                emailAd=EmailAddress(
+                    user_id=user.id,
+                    email=form.cleaned_data['Email'],
+                    verified=True,
+                    primary=True
+                )
+                emailAd.save()
+                trainer=Trainer(
+                trainer=user, 
+                gender=  form.cleaned_data['Gender'],
+                phoneNumber=form.cleaned_data['Phone_Number'], 
+                address=form.cleaned_data['Description'],
+                image=form.cleaned_data['Personal_Image'],
+                dateOfBirth=date.today())
+                trainer.save()
+                submitted=True
+                return  render (request,'users/trainerRegForm.html',{'form':form,'submitted':submitted})
+            except :
+                return render (request,'users/trainerRegForm.html',{'form':form,'submitted':submitted,'customError':"this email or username exists before"})
+
+        else :
+            
+
+           return render (request,'users/trainerRegForm.html',{'form':form,'submitted':submitted})
